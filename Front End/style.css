@@ -1,0 +1,1485 @@
+/* MacBook Pro - 1 */
+
+position: relative;
+width: 1440px;
+height: 900px;
+
+background: #FFFFFF;
+
+
+/* Entire Page */
+
+position: absolute;
+width: 1364px;
+height: 874px;
+left: 26px;
+top: 1px;
+
+
+
+/* Day Visualization */
+
+position: absolute;
+width: 402px;
+height: 838px;
+left: 988px;
+top: 33px;
+
+
+
+/* Rectangle 1 */
+
+position: absolute;
+left: 5.97%;
+right: 5.97%;
+top: 9.43%;
+bottom: 0%;
+
+background: #C4C4C4;
+
+
+/* How You Spent Your 24 Hours: */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 90.57%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 28px;
+line-height: 33px;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Rectangle 2 */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 26.01%;
+bottom: 60.86%;
+
+background: #F98F43;
+
+
+/* Rectangle 6 */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 40.69%;
+bottom: 46.18%;
+
+background: #FCE77D;
+
+
+/* Rectangle 3 */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 84.73%;
+bottom: 2.15%;
+
+background: #FF004D;
+
+
+/* Rectangle 4 */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 55.37%;
+bottom: 31.5%;
+
+background: #F25999;
+
+
+/* Rectangle 7 */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 70.05%;
+bottom: 16.83%;
+
+background: #FFF500;
+
+
+/* Rectangle 5 */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 11.69%;
+bottom: 75.18%;
+
+background: #F86767;
+
+
+/* Exercise: */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 26.01%;
+bottom: 60.86%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Sleep: */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 11.34%;
+bottom: 75.54%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Work: */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 70.05%;
+bottom: 16.83%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Meals: */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 40.69%;
+bottom: 46.18%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Social: */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 55.37%;
+bottom: 31.5%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Downtime: */
+
+position: absolute;
+left: 10.45%;
+right: 10.45%;
+top: 84.73%;
+bottom: 2.15%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Day Breakdown */
+
+position: absolute;
+width: 594px;
+height: 503px;
+left: 126px;
+top: 85px;
+
+
+
+/* Form Contents */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 11.93%;
+bottom: 0%;
+
+
+
+/* Rectangle 8 */
+
+position: absolute;
+left: 36.2%;
+right: 0%;
+top: 0%;
+bottom: 86.91%;
+
+background: #C4C4C4;
+
+
+/* Rectangle 9 */
+
+position: absolute;
+left: 36.2%;
+right: 0%;
+top: 17.38%;
+bottom: 69.53%;
+
+background: #C4C4C4;
+
+
+/* Rectangle 10 */
+
+position: absolute;
+left: 36.2%;
+right: 0%;
+top: 34.76%;
+bottom: 52.14%;
+
+background: #C4C4C4;
+
+
+/* Rectangle 11 */
+
+position: absolute;
+left: 36.2%;
+right: 0%;
+top: 52.14%;
+bottom: 34.76%;
+
+background: #C4C4C4;
+
+
+/* Rectangle 12 */
+
+position: absolute;
+left: 36.2%;
+right: 0%;
+top: 69.53%;
+bottom: 17.38%;
+
+background: #C4C4C4;
+
+
+/* Rectangle 13 */
+
+position: absolute;
+left: 36.2%;
+right: 0%;
+top: 86.91%;
+bottom: 0%;
+
+background: #C4C4C4;
+
+
+/* Sleep: */
+
+position: absolute;
+left: 0%;
+right: 63.8%;
+top: 0%;
+bottom: 86.91%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Social: */
+
+position: absolute;
+left: 0%;
+right: 63.8%;
+top: 52.14%;
+bottom: 34.76%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Work: */
+
+position: absolute;
+left: 0%;
+right: 63.8%;
+top: 69.53%;
+bottom: 17.38%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Downtime: */
+
+position: absolute;
+left: 0%;
+right: 63.8%;
+top: 86.91%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Meals: */
+
+position: absolute;
+left: 0%;
+right: 63.8%;
+top: 34.76%;
+bottom: 52.14%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Exercise: */
+
+position: absolute;
+left: 0%;
+right: 63.8%;
+top: 17.38%;
+bottom: 69.53%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Breakdown your day below: */
+
+position: absolute;
+left: 36.7%;
+right: 1.01%;
+top: 0%;
+bottom: 92.64%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+text-align: center;
+
+color: #000000;
+
+
+
+/* MoodSelection */
+
+position: absolute;
+width: 379px;
+height: 170px;
+left: 341px;
+top: 636px;
+
+
+
+/* Mood Chart  */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 34.71%;
+bottom: 0%;
+
+
+
+/* 1 */
+
+position: absolute;
+left: 6.17%;
+right: 88.6%;
+top: 66.03%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 40px;
+line-height: 47px;
+
+color: #000000;
+
+
+
+/* 2 */
+
+position: absolute;
+left: 26.92%;
+right: 67.85%;
+top: 66.03%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 40px;
+line-height: 47px;
+
+color: #000000;
+
+
+
+/* 3 */
+
+position: absolute;
+left: 47.29%;
+right: 47.48%;
+top: 66.03%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 40px;
+line-height: 47px;
+
+color: #000000;
+
+
+
+/* 5 */
+
+position: absolute;
+left: 88.41%;
+right: 6.36%;
+top: 66.03%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 40px;
+line-height: 47px;
+
+color: #000000;
+
+
+
+/* Content (4/5) */
+
+position: absolute;
+left: 61.68%;
+right: 20.56%;
+top: 1.28%;
+bottom: 37.82%;
+
+
+
+/* Neutral (3/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #FFF06D;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 78.95%;
+right: -36.84%;
+top: 80.53%;
+bottom: -9.47%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Ellipse 5 */
+
+position: absolute;
+left: 23.16%;
+right: 24.21%;
+top: 54.74%;
+bottom: 34.74%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+
+
+/* Happy (5/5) */
+
+position: absolute;
+left: 82.24%;
+right: 0%;
+top: 0%;
+bottom: 39.1%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #FEE500;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 21.05%;
+right: 21.05%;
+top: 51.58%;
+bottom: 19.47%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+
+
+/* 4 */
+
+position: absolute;
+left: 67.85%;
+right: 26.92%;
+top: 66.03%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 40px;
+line-height: 47px;
+
+color: #000000;
+
+
+
+/* Sad (1/5) */
+
+position: absolute;
+left: 0%;
+right: 82.24%;
+top: 0.64%;
+bottom: 38.46%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #7D99FC;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 78.95%;
+right: -36.84%;
+top: 80.53%;
+bottom: -9.47%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Eh (3/5) */
+
+position: absolute;
+left: 41.12%;
+right: 41.12%;
+top: 0%;
+bottom: 39.1%;
+
+
+
+/* Neutral (3/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Neutral (3/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #FFF6A2;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 78.95%;
+right: -36.84%;
+top: 80.53%;
+bottom: -9.47%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Line 1 */
+
+position: absolute;
+left: 22.11%;
+right: 25.26%;
+top: 66.32%;
+bottom: 33.68%;
+
+border: 5px solid #000000;
+
+
+/* Meh (2/5) */
+
+position: absolute;
+left: 20.56%;
+right: 61.68%;
+top: 0.64%;
+bottom: 38.46%;
+
+
+
+/* Meh (2/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Neutral (3/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #CCD7FF;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 78.95%;
+right: -36.84%;
+top: 80.53%;
+bottom: -9.47%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Ellipse 5 */
+
+position: absolute;
+left: 23.16%;
+right: 24.21%;
+top: 54.74%;
+bottom: 34.74%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+
+
+/* Ellipse 5 */
+
+position: absolute;
+left: 75.79%;
+right: -28.42%;
+top: 66.32%;
+bottom: 25.26%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* How was your mood today? */
+
+position: absolute;
+left: 2.37%;
+right: 0%;
+top: 0%;
+bottom: 78.24%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+text-align: center;
+
+color: #000000;
+
+
+
+/* Submit Button */
+
+position: absolute;
+width: 228px;
+height: 44px;
+left: 415px;
+top: 831px;
+
+
+
+/* Rectangle 14 */
+
+position: absolute;
+left: 0.44%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #000000;
+
+
+/* SUBMIT */
+
+position: absolute;
+left: 0%;
+right: 0.44%;
+top: 0%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Top Left */
+
+position: absolute;
+width: 231px;
+height: 145px;
+left: 26px;
+top: 1px;
+
+
+
+/* Welcome, Brooke! */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 71.72%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+
+color: #000000;
+
+
+
+/* Logo */
+
+position: absolute;
+left: 16.88%;
+right: 35.93%;
+top: 0%;
+bottom: 29.66%;
+
+
+
+/* Happy (5/5) */
+
+position: absolute;
+left: 11.01%;
+right: 52.29%;
+top: 60.78%;
+bottom: 0%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #FEE500;
+opacity: 0.3;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 21.05%;
+right: 21.05%;
+top: 51.58%;
+bottom: 19.47%;
+
+opacity: 0.3;
+border: 5px solid #000000;
+box-sizing: border-box;
+
+
+/* Content (4/5) */
+
+position: absolute;
+left: 50.46%;
+right: 12.84%;
+top: 60.78%;
+bottom: 0%;
+
+
+
+/* Neutral (3/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #FFF06D;
+opacity: 0.3;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 78.95%;
+right: -36.84%;
+top: 80.53%;
+bottom: -9.47%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Ellipse 5 */
+
+position: absolute;
+left: 23.16%;
+right: 24.21%;
+top: 54.74%;
+bottom: 34.74%;
+
+opacity: 0.3;
+border: 5px solid #000000;
+box-sizing: border-box;
+
+
+/* Eh (3/5) */
+
+position: absolute;
+left: 61.47%;
+right: 1.83%;
+top: 22.55%;
+bottom: 38.24%;
+
+
+
+/* Neutral (3/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Neutral (3/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #FFF6A2;
+opacity: 0.3;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 78.95%;
+right: -36.84%;
+top: 80.53%;
+bottom: -9.47%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Line 1 */
+
+position: absolute;
+left: 22.11%;
+right: 25.26%;
+top: 66.32%;
+bottom: 33.68%;
+
+opacity: 0.3;
+border: 5px solid #000000;
+
+
+/* Meh (2/5) */
+
+position: absolute;
+left: 28.44%;
+right: 34.86%;
+top: 0%;
+bottom: 60.78%;
+
+
+
+/* Meh (2/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Neutral (3/5) */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #CCD7FF;
+opacity: 0.3;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 78.95%;
+right: -36.84%;
+top: 80.53%;
+bottom: -9.47%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Ellipse 5 */
+
+position: absolute;
+left: 23.16%;
+right: 24.21%;
+top: 54.74%;
+bottom: 34.74%;
+
+border: 5px solid #000000;
+box-sizing: border-box;
+
+
+/* Ellipse 5 */
+
+position: absolute;
+left: 75.79%;
+right: -28.42%;
+top: 66.32%;
+bottom: 25.26%;
+
+opacity: 0.3;
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Sad (1/5) */
+
+position: absolute;
+left: 0%;
+right: 63.3%;
+top: 25.49%;
+bottom: 35.29%;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #7D99FC;
+opacity: 0.3;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 23.16%;
+right: 64.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 63.16%;
+right: 24.21%;
+top: 29.47%;
+bottom: 57.89%;
+
+background: #000000;
+opacity: 0.3;
+
+
+/* Ellipse 4 */
+
+position: absolute;
+left: 78.95%;
+right: -36.84%;
+top: 80.53%;
+bottom: -9.47%;
+
+opacity: 0.3;
+border: 5px solid #000000;
+box-sizing: border-box;
+transform: rotate(-180deg);
+
+
+/* Pick MeUp */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 20px;
+line-height: 23px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+mix-blend-mode: normal;
