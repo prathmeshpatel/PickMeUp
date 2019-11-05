@@ -1,0 +1,65 @@
+#logo-circle{
+    height: 80px;
+    width: 230px;
+    float: left;
+    margin-left: 20px;
+}
+
+#spentday-header{
+
+
+}
+#outer-rectangle{
+    margin: auto;
+    background: grey;
+    border: 2px solid darkgray;
+    font-family: "Arial";
+    width: 50%;
+    height: 600px;
+    margin-bottom: 25px;
+    margin-left: 25%;
+    display: block;
+    overflow: auto;
+    /* Rectangle 1 */
+
+/*position: absolute;
+left: 5.97%;
+right: 5.97%;
+top: 9.43%;
+bottom: 0%;
+
+background: #C4C4C4;*/
+
+}
+
+.category-rectangle{
+position: relative;
+height: 12%;
+width: 90%;
+margin-left: 5%;
+margin-top: 4%;
+}
+
+#sleep-rectangle{
+background: #F86767;
+}
+
+#exercise-rectangle{
+background: #F98F43;
+}
+
+#meals-rectangle{
+background: #FCE77D;
+}
+
+#social-rectangle{
+background: #F25999;
+}
+
+#work-rectangle{
+background: #FFF500;
+}
+
+#downtime-rectangle{
+background: #FF004D;
+}
