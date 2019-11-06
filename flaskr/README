@@ -1,0 +1,5 @@
+To test:
+python flaskr_tests.py
+
+To run:
+sh run.sh create.db
