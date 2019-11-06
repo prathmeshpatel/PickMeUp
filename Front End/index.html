@@ -7,7 +7,7 @@
 </head>
 
 <body class= "body">
-    <header class= "header">
+    <header class= "header" id= "welcome">
         <h1> Welcome!  </h1>
     </header>
 
@@ -15,36 +15,47 @@
     <form>
       <!-- SLEEP -->
       <div class="form-group">
-        <label for="example-sleep">Sleep</label>
+        <label for="example-sleep">Sleep</label> <br>
         <input type="number" class="form-control" id= "example-sleep" placeholder="Hours of Sleep">
       </div>
       <!-- EXERCISE -->
       <div class="form-group">
-        <label for="example-exercise">Exercise</label>
+        <label for="example-exercise">Exercise</label> <br>
         <input type="number" class="form-control" id= "example-exercise" placeholder="Hours of Exercise">
       </div>
       <!-- MEALS -->
       <div class="form-group">
-        <label for="example-meals">Meals</label>
+        <label for="example-meals">Meals</label> <br>
         <input type="number" class="form-control" id= "example-meals" placeholder="Hours of Meals">
       </div>
       <!-- SOCIAL -->
       <div class="form-group">
-        <label for="example-social">Social</label>
+        <label for="example-social">Social</label> <br>
         <input type="number" class="form-control" id= "example-social" placeholder="Hours of Social">
       </div>
       <!-- WORK -->
       <div class="form-group">
-        <label for="example-work">Work</label>
+        <label for="example-work">Work</label> <br>
         <input type="number" class="form-control" id= "example-work" placeholder="Hours of Work">
       </div>
       <!-- DOWNTIME -->
       <div class="form-group">
-        <label for="example-downtime">Downtime</label>
+        <label for="example-downtime">Downtime</label> <br>
         <input type="number" class="form-control" id= "example-downtime" placeholder="Hours of Downtime">
       </div>
 
-      <button type="submit" onclick= "showInput();"  class="btn btn-primary">Submit</button>
+      <!-- MOOD -->
+      <div class="form-group">
+        <label for="example-mood">Mood</label> <br>
+        <input type="number" class="form-control" id= "example-mood" placeholder="Mood">
+      </div> <br>
+      <div id="mood-scale">
+            <img src="images/mood.svg" alt="Mood" id= "mood-image">
+      </div>
+
+      <div id= "submit-button">
+      <button type="submit" class="submit-button" onclick= "showInput();"  class="btn btn-primary">Submit</button>
+      </div>
     </form>
 </div>
 
