@@ -1,0 +1,22 @@
+CS 316 Project - Milestone 2
+Members:
+Brooke Erickson
+Nikki Hevizi
+Kyle Murphy
+Prathmesh Patel
+Morgan Smith
+
+Contributions:
+- Brooke Erickson: 
+Worked with Nikki on the front-end design of the web app which will be implemented to the current webapp in future steps. This was done through a process of creating high-fidelity mockups which were converted into HTML and CSS. In future steps, React.js will be used to integrate dynamic visualizations. Additionally, contributed to parts of the progress report and data reporting.
+
+- Prath Patel: 
+Modified existing CRUD features in Flask app by implementing a simplified Mood table input feature on the main page. Created a run.sh script that starts the flask app with an existing db (or initializes and loads a db if one doesn’t exist). Added ability to load in SQL Insert statements and to run sample test queries. Created simple unittest. 
+
+- Nikki Hevizi: Worked with Brooke on the front-end of the web-app. Created high-fidelity mockups using Figma, then translated this into HTML and CSS files (index.html and style.css). Started learning JavaScript and React.js to be able to add interactivity and data visualizations as the next step for the final product.
+
+- Kyle Murphy: 
+Created initial flask application and CRUD features. Group used these as a baseline to modify and adjust to our applications features/database schema. Helped modify the baseline application as well.
+
+- Morgan Smith: 
+Worked with Kyle and Prath on the CRUD features as well as working on transforming postgres to sqlite. Helped with writing the progress report and began relearning React to help with the front-end in future steps. 
