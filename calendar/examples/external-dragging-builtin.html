@@ -42,11 +42,6 @@
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
       drop: function(arg) {
-        // is the "remove after drop" checkbox checked?
-        if (document.getElementById('drop-remove').checked) {
-          // if so, remove the element from the "Draggable Events" list
-          arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-        }
       }
     });
     calendar.render();
@@ -136,9 +131,6 @@
           <div class='fc-event'>😥 </div>
       </div>
 
-      <p>
-        <input type='checkbox' id='drop-remove' />
-        <label for='drop-remove'>remove after drop</label>
       </p>
     </div>
     <div id='calendar'></div>
