@@ -15,7 +15,16 @@ app.config.update(dict(
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
-idCount=0
+idCount = 0
+
+
+class User:
+    def __init__(self, id, name, email, password):
+        self.id = id
+        self.name = name
+        self.email = email
+        self.password = password
+
 
 def connect_db():
     """Connects to the specific database."""
@@ -82,6 +91,7 @@ def show_entries():
     db.close()
     return render_template('show_entries.html', mood=mood)
 
+
 def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
@@ -100,21 +110,20 @@ def add_entry():
     flash('New mood was successfully posted.')
     return redirect(url_for('show_entries'))
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     # if session.get('logged_in'):
     #     abort(401)
     error = None
-
     db = get_db()
-
     if request.method == 'Post':
         if request.form['id'] not in query_db('select id from RegisteredUser'):
             # may want to use auto increment
             db.execute('insert into RegisteredUser (id, name, email) values(?,?,?)',
                        [request.form['id'], request.form['name'], request.form['email']])
 
-            #would add this to database
+            # would add this to database
             db.commit()
             flash('You have successfully signed up.')
             return redirect(url_for('login'))
@@ -127,9 +136,9 @@ def signup():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
+        if request.form['username'] not in query_db('select id from RegisteredUser'):
             error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
+        elif request.form['password'] not in query_db('select password from RegisteredUser where id = ()'):
             error = 'Invalid password'
         else:
             session['logged_in'] = True
