@@ -16,14 +16,13 @@ app.config.update(dict(
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 idCount = 0
-
+current_user = None
 
 class User:
     def __init__(self, id, name, email, password):
         self.id = id
         self.name = name
         self.email = email
-        self.password = password
 
 
 def connect_db():
@@ -136,11 +135,13 @@ def signup():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] not in query_db('select id from RegisteredUser'):
+        if request.form['email'] not in query_db('select email from RegisteredUser'):
             error = 'Invalid username'
-        elif request.form['password'] not in query_db('select password from RegisteredUser where id = ()'):
+        elif request.form['password'] not in query_db('select password from RegisteredUser where email = (?)', [request.form['email']]):
             error = 'Invalid password'
         else:
+            user = query_db('select * from RegisteredUser where email = ?', [request.form['email']])
+            current_user = User(id, name, email)
             session['logged_in'] = True
             flash('You were logged in')
             return redirect(url_for('show_entries'))
