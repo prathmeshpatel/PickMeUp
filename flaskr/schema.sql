@@ -1,8 +1,9 @@
 -- drop table if exists entries;
 CREATE TABLE RegisteredUser
-(id INTEGER NOT NULL PRIMARY KEY UNIQUE,
+(id INTEGER NOT NULL PRIMARY KEY UNIQUE AUTOINCREMENT,
  name VARCHAR(256) NOT NULL,
- email VARCHAR(256) NOT NULL UNIQUE
+ email VARCHAR(256) NOT NULL UNIQUE,
+ password VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE Sleep
@@ -64,6 +65,9 @@ CREATE TABLE Environment
                 'cloudy', 'rainy', 'snowy', 'inclement weather', 'overcast', 'foggy', 'smog')),
 PRIMARY KEY (user_id, date)
 );
+
+CREATE INDEX IDX_ID
+ON RegisteredUser(id);
 
 CREATE TABLE Mood
 (user_id TEXT NOT NULL,

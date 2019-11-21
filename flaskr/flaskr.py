@@ -15,7 +15,16 @@ app.config.update(dict(
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
-idCount=0
+idCount = 0
+default_user = None
+
+
+class User:
+    def __init__(self, name, email, id):
+        self.id = id
+        self.name = name
+        self.email = email
+
 
 def connect_db():
     """Connects to the specific database."""
@@ -82,6 +91,7 @@ def show_entries():
     db.close()
     return render_template('show_entries.html', mood=mood)
 
+
 def query_db(query, args=(), one=False):
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
@@ -100,6 +110,7 @@ def add_entry():
     flash('New mood was successfully posted.')
     return redirect(url_for('show_entries'))
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     # if session.get('logged_in'):
@@ -109,12 +120,12 @@ def signup():
     db = get_db()
 
     if request.method == 'Post':
-        if request.form['id'] not in query_db('select id from RegisteredUser'):
+        if request.form['email'] not in query_db('select email from RegisteredUser'):
             # may want to use auto increment
-            db.execute('insert into RegisteredUser (id, name, email) values(?,?,?)',
-                       [request.form['id'], request.form['name'], request.form['email']])
+            db.execute('insert into RegisteredUser (name, email) values(?,?)',
+                       [request.form['name'], request.form['email']])
 
-            #would add this to database
+            # would add this to database
             db.commit()
             flash('You have successfully signed up.')
             return redirect(url_for('login'))
@@ -127,10 +138,10 @@ def signup():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
+        if request.form['email'] not in query_db('select email from RegisteredUser'):
+            error = 'Invalid email. If you do not have an account, please signup.'
+        elif request.form['password'] not in query_db('select password from RegisteredUser where email = ()'):
+            error = 'Invalid email. If you do not have an account, please signup.'
         else:
             session['logged_in'] = True
             flash('You were logged in')
