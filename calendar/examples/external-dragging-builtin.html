@@ -13,7 +13,8 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     var Calendar = FullCalendar.Calendar;
-    var Draggable = FullCalendarInteraction.Draggable
+    var Draggable = FullCalendarInteraction.Draggable;
+    var Emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
 
     /* initialize the external events
     -----------------------------------------------------------------*/
@@ -41,7 +42,52 @@
       },
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
-      drop: function(arg) {
+
+      eventReceive: function(info) {
+        //VARIABLE DATE GIVES DATE AS A STRING
+        //VARIABLE MOOD_NUM GIVES MOOD AS A NUMBER
+        //VARIABLE DURATION INITIALIZES DURATION TO 1 BECAUSE WHEN DRAG TO CALENDAR, AUTO DURATION STARTS AT 1hr
+        var type = info.draggedEl.getAttribute("id");
+        var date = info.event.start.getMonth() + "/" + info.event.start.getDate() + "/" + info.event.start.getFullYear();
+        var duration = 1;
+
+        if (type=="mood"){
+          var mood_num = 0;
+          for (index = 0; index < Emojis.length; index++) { 
+            if (info.event.title==Emojis[index]){
+              mood_num = index;
+            }
+          }
+        alert(info.event.title + " " + mood_num + " is your " + type + " on " + date);
+      }
+      else (
+        alert(info.event.title + " duration is now " + duration))
+        /*$.ajax({
+          data: {
+            date: info.event.start,
+            happiness: info.event.title,
+          },
+          type: 'POST',
+          url: '/add'
+        });*/
+      },
+
+      eventResize: function(info) {
+        //VARIABLE DURATION GIVES HOURS AS A FLOAT
+        var hours_duration = parseInt(info.event.end.getHours())-parseInt(info.event.start.getHours());
+        var minutes_duration = parseFloat((info.event.end.getMinutes()-info.event.start.getMinutes())/60);
+        var duration = hours_duration+minutes_duration;
+        alert(info.event.title + " duration is now " + duration);
+        if (!confirm("is this okay?")) {
+          info.revert();
+        }
+        /*$.ajax({
+          data: {
+            duration: duration,
+          },
+          type: 'POST',
+          url: '/insert'
+        });*/
       }
     });
     calendar.render();
@@ -50,26 +96,23 @@
 
 </script>
 <style>
-
   body {
-    margin-top: 40px;
+    margin-top: 10px;
     font-size: 14px;
     font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
   }
-
   #logo-circle{
-      height: 80px;
-      width: 230px;
-      float: left;
-      margin-left: 20px;
+      height: 80px;
+      width: 230px;
+      float: left;
+      margin-left: 0px;
   }
-
   #wrap {
     width: 1100px;
     margin: 0 auto;
   }
-
   #external-events {
+    margin-top: 5%;
     float: left;
     width: 150px;
     padding: 0 10px;
@@ -77,42 +120,38 @@
     background: #eee;
     text-align: left;
   }
-
   #external-events h4 {
     font-size: 16px;
     margin-top: 0;
     padding-top: 1em;
   }
-
   #external-events .fc-event {
     margin: 10px 0;
     cursor: pointer;
   }
-
   #external-events p {
     margin: 1.5em 0;
     font-size: 11px;
     color: #666;
   }
-
   #external-events p input {
     margin: 0;
     vertical-align: middle;
   }
-
   #calendar {
+    margin-top: 0px;
     float: right;
     width: 900px;
   }
-
 </style>
 </head>
 <body>
-    <div id="logo-circle">
-          <img src="../images/logo-1.svg" alt="Logo">
-    </div>
 
   <div id='wrap'>
+    <div id="logo-circle">
+      <img src="../images/logo-1.svg" alt="Logo">
+    </div>
+    <div id='calendar'></div>
     <div id='external-events'>
       <h4>Log your day!</h4>
       <div id='external-events-list'>
@@ -130,10 +169,8 @@
           <div class='fc-event'>😕</div>
           <div class='fc-event'>😥 </div>
       </div>
-
-      </p>
-    </div>
-    <div id='calendar'></div>
+    </p>
+  </div>
     <div style='clear:both'></div>
   </div>
 </body>
