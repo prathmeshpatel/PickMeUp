@@ -46,7 +46,9 @@
       eventDrop: function(event, delta, revertFunc) {  // On event drop, post to add entry to table
         $.ajax({
           data: {
-            date: event.start,
+            date: JSON.stringify(event.start),
+            contentType:"application/json",
+            dataType:"json"
           },
           type: 'POST',
           url: '/add'
