@@ -47,11 +47,11 @@
         $.ajax({
           data: {
             date: JSON.stringify(event.start),
-            contentType:"application/json",
-            dataType:"json"
           },
           type: 'POST',
-          url: '/add'
+          url: '/add',
+          contentType:"application/json",
+          dataType:"json"
         });
       },
       eventResize: function(info) {  // update entry in table
