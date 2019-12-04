@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-    render_template, flash
+    render_template, flash, jsonify
 
 app = Flask(__name__)  # create the application instance
 app.config.from_object(__name__)  # load config from this file, flaskr.py
@@ -92,6 +92,13 @@ def query_db(query, args=(), one=False):
     return rv if rv else None
 
 
+def rows_to_json(rows):
+    data = []
+    for row in rows:
+        data.append(row['date'])
+        print(data)
+    return jsonify(data)
+
 @app.route('/')
 def show_entries():
     global current_user
@@ -99,6 +106,15 @@ def show_entries():
         return redirect(url_for('login'))
     mood = query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
     return render_template('show_entries.html', mood=mood, user=current_user)
+
+
+@app.route('/calendar')
+def show_cal():
+    global current_user
+    if not session.get('logged_in') or not current_user:
+        return redirect(url_for('login'))
+    mood = rows_to_json(query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email]))
+    return render_template('external-dragging-builtin.html', mood=mood)
 
 
 @app.route('/add', methods=['POST'])
@@ -121,7 +137,7 @@ def signup():
     error = None
     if request.method == 'POST':
         if request.form['email'] not in query_db('select email from RegisteredUser'):
-            query_db('insert into RegisteredUser (name, email) values(?,?)', 
+            query_db('insert into RegisteredUser (name, email) values(?,?)',
                      [request.form['name'], request.form['email']])
             flash('You have successfully signed up.')
             return redirect(url_for('login'))
