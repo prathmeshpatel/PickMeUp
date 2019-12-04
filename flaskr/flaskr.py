@@ -113,6 +113,15 @@ def add_entry():
     return redirect(url_for('show_entries'))
 
 
+@app.route('/calendar')
+def show_cal():
+    global current_user
+    if not session.get('logged_in') or not current_user:
+        return redirect(url_for('login'))
+    mood = rows_to_json(query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email]))
+    return render_template('external-dragging-builtin.html', mood=mood)
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     global current_user
