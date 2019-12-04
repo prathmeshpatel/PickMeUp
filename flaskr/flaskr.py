@@ -19,11 +19,12 @@ idCount = 0
 current_user = None
 
 class User:
-    def __init__(self, id, name, email, password):
-        self.id = id
+    def __init__(self, name, email):
         self.name = name
         self.email = email
 
+    def __repr__(self):
+        return f'User({self.name}, {self.email})'
 
 def connect_db():
     """Connects to the specific database."""
@@ -82,74 +83,83 @@ def initdb_command():
     print('Initialized the database.')
 
 
+def query_db(query, args=(), one=False):
+    print("HEY")
+    db = get_db()
+    cur = db.execute(query, args)
+    rv = cur.fetchall()
+    db.commit()
+    return rv if rv else None
+
+
 @app.route('/')
 def show_entries():
-    db = get_db()
-    cur = db.execute('select user_id, date, happiness from Mood order by user_id desc')
-    mood = cur.fetchall()
-    db.close()
-    return render_template('show_entries.html', mood=mood)
-
-
-def query_db(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rv = cur.fetchall()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
+    global current_user
+    if not session.get('logged_in') or not current_user:
+        return redirect(url_for('login'))
+    mood = query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
+    return render_template('show_entries.html', mood=mood, user=current_user)
 
 
 @app.route('/add', methods=['POST'])
 def add_entry():
-    if not session.get('logged_in'):
-        abort(401)
-    db = get_db()
-    db.execute('insert into Mood (user_id, date, happiness) values (?, ?, ?)',
-               [request.form['user_id'], request.form['date'], request.form['happiness']])
-    db.commit()
+    global current_user
+    if not session.get('logged_in') or not current_user:
+        return redirect(url_for('login'))
+    query_db('insert into Mood (email, date, happiness) values (?, ?, ?)',
+             [current_user.email, request.form['date'], request.form['happiness']])
+    print([x['date'] for x in query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])])
     flash('New mood was successfully posted.')
     return redirect(url_for('show_entries'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    # if session.get('logged_in'):
-    #     abort(401)
+    global current_user
+    if session.get('logged_in') and current_user:
+        return redirect(url_for('show_entries'))
     error = None
-    db = get_db()
-    if request.method == 'Post':
-        if request.form['id'] not in query_db('select id from RegisteredUser'):
-            # may want to use auto increment
-            db.execute('insert into RegisteredUser (id, name, email) values(?,?,?)',
-                       [request.form['id'], request.form['name'], request.form['email']])
-
-            # would add this to database
-            db.commit()
+    if request.method == 'POST':
+        if request.form['email'] not in query_db('select email from RegisteredUser'):
+            query_db('insert into RegisteredUser (name, email) values(?,?)', 
+                     [request.form['name'], request.form['email']])
             flash('You have successfully signed up.')
             return redirect(url_for('login'))
         else:
-            error = 'User ID is taken'
+            error = 'You have already signed up'
     return render_template('signup.html', error=error)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global current_user
     error = None
     if request.method == 'POST':
-        if request.form['email'] not in query_db('select email from RegisteredUser'):
-            error = 'Invalid username'
-        elif request.form['password'] not in query_db('select password from RegisteredUser where email = (?)', [request.form['email']]):
-            error = 'Invalid password'
+        q = [x['email'] for x in query_db('select email from RegisteredUser')]
+        p = [x['password'] for x in query_db('select password from RegisteredUser where email = ?', [request.form['email']])]
+        if request.form['email'] not in q:
+            error = 'Invalid email. If you do not have an account, please sign up.'
+        elif request.form['password'] not in p:
+            error = 'Invalid password for this email.'
         else:
             user = query_db('select * from RegisteredUser where email = ?', [request.form['email']])
-            current_user = User(id, name, email)
+            name, email = user[0]['name'], user[0]['email']
+            current_user = User(name, email)
+            print(current_user)
+
             session['logged_in'] = True
-            flash('You were logged in')
+            flash(f'Welcome Back, {name}!')
             return redirect(url_for('show_entries'))
     return render_template('login.html', error=error)
 
 
 @app.route('/logout')
 def logout():
+    global current_user
+    if not session['logged_in']:
+        return redirect(url_for('login'))
+    current_user = None
+    session['logged_in'] = False
     session.pop('logged_in', None)
     flash('You were logged out')
-    return redirect(url_for('show_entries'))
+    return redirect(url_for('login'))

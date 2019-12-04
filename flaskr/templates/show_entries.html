@@ -3,12 +3,10 @@
   {% if session.logged_in %}
     <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
       <dl>
-        <dt>What is your user id?:
-        <dd><input type=number min=1111 max=1120 name=user_id>
         <dt>What is today's date (MM/DD/YY)?:
-        <dd><input type=text size=30 name=date>
+        <dd><input type=date size=30 name=date required>
         <dt>How was your day? (1-5 where 5 is best):
-        <dd> <input type=number min=1 max=5 name=happiness>
+        <dd> <input type=integer min=1 max=5 name=happiness required>
         <!-- <dd><textarea name=text rows=5 cols=40></textarea> -->
         <dd><input type=submit value=Share>
       </dl>
@@ -16,7 +14,7 @@
   {% endif %}
   <ul class=mood>
   {% for m in mood %}
-    <li><h2>{{ m.user_id }}</h2><body>{{ m.date }}</body><h4>Mood: {{ m.happiness|safe }}</h4>
+    <li><h2>{{ m.date }}</h2><h4>Mood: {{ m.happiness|safe }}</h4>
   {% else %}
     <li><em>Unbelievable!  No mood entries here so far!</em>
   {% endfor %}
