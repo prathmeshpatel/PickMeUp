@@ -107,50 +107,7 @@ Docs & License: https://fullcalendar.io/
                 _this.emitter.trigger('pointerup', _this.createEventFromMouse(ev));
                 _this.cleanup(); // call last so that pointerup has access to props
             };
-            // Touch
-            // ----------------------------------------------------------------------------------------------------
-            this.handleTouchStart = function (ev) {
-                if (_this.tryStart(ev)) {
-                    _this.isTouchDragging = true;
-                    var pev = _this.createEventFromTouch(ev, true);
-                    _this.emitter.trigger('pointerdown', pev);
-                    _this.initScrollWatch(pev);
-                    // unlike mouse, need to attach to target, not document
-                    // https://stackoverflow.com/a/45760014
-                    var target = ev.target;
-                    if (!_this.shouldIgnoreMove) {
-                        target.addEventListener('touchmove', _this.handleTouchMove);
-                    }
-                    target.addEventListener('touchend', _this.handleTouchEnd);
-                    target.addEventListener('touchcancel', _this.handleTouchEnd); // treat it as a touch end
-                    // attach a handler to get called when ANY scroll action happens on the page.
-                    // this was impossible to do with normal on/off because 'scroll' doesn't bubble.
-                    // http://stackoverflow.com/a/32954565/96342
-                    window.addEventListener('scroll', _this.handleTouchScroll, true // useCapture
-                    );
-                }
-            };
-            this.handleTouchMove = function (ev) {
-                var pev = _this.createEventFromTouch(ev);
-                _this.recordCoords(pev);
-                _this.emitter.trigger('pointermove', pev);
-            };
-            this.handleTouchEnd = function (ev) {
-                if (_this.isDragging) { // done to guard against touchend followed by touchcancel
-                    var target = ev.target;
-                    target.removeEventListener('touchmove', _this.handleTouchMove);
-                    target.removeEventListener('touchend', _this.handleTouchEnd);
-                    target.removeEventListener('touchcancel', _this.handleTouchEnd);
-                    window.removeEventListener('scroll', _this.handleTouchScroll, true); // useCaptured=true
-                    _this.emitter.trigger('pointerup', _this.createEventFromTouch(ev));
-                    _this.cleanup(); // call last so that pointerup has access to props
-                    _this.isTouchDragging = false;
-                    startIgnoringMouse();
-                }
-            };
-            this.handleTouchScroll = function () {
-                _this.wasTouchScroll = true;
-            };
+
             this.handleScroll = function (ev) {
                 if (!_this.shouldIgnoreMove) {
                     var pageX = (window.pageXOffset - _this.prevScrollX) + _this.prevPageX;
@@ -256,41 +213,6 @@ Docs & License: https://fullcalendar.io/
                 subjectEl: this.subjectEl,
                 pageX: ev.pageX,
                 pageY: ev.pageY,
-                deltaX: deltaX,
-                deltaY: deltaY
-            };
-        };
-        PointerDragging.prototype.createEventFromTouch = function (ev, isFirst) {
-            var touches = ev.touches;
-            var pageX;
-            var pageY;
-            var deltaX = 0;
-            var deltaY = 0;
-            // if touch coords available, prefer,
-            // because FF would give bad ev.pageX ev.pageY
-            if (touches && touches.length) {
-                pageX = touches[0].pageX;
-                pageY = touches[0].pageY;
-            }
-            else {
-                pageX = ev.pageX;
-                pageY = ev.pageY;
-            }
-            // TODO: repeat code
-            if (isFirst) {
-                this.origPageX = pageX;
-                this.origPageY = pageY;
-            }
-            else {
-                deltaX = pageX - this.origPageX;
-                deltaY = pageY - this.origPageY;
-            }
-            return {
-                origEvent: ev,
-                isTouch: true,
-                subjectEl: this.subjectEl,
-                pageX: pageX,
-                pageY: pageY,
                 deltaX: deltaX,
                 deltaY: deltaY
             };

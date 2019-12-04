@@ -18,7 +18,6 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 idCount = 0
 current_user = None
 
-
 class User:
     def __init__(self, name, email):
         self.name = name
@@ -26,7 +25,6 @@ class User:
 
     def __repr__(self):
         return f'User({self.name}, {self.email})'
-
 
 def connect_db():
     """Connects to the specific database."""
@@ -148,6 +146,7 @@ def login():
             name, email = user[0]['name'], user[0]['email']
             current_user = User(name, email)
             print(current_user)
+
             session['logged_in'] = True
             flash(f'Welcome Back, {name}!')
             return redirect(url_for('show_entries'))
