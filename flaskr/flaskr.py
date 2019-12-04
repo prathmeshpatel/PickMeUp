@@ -121,8 +121,8 @@ def signup():
     error = None
     if request.method == 'POST':
         if request.form['email'] not in query_db('select email from RegisteredUser'):
-            query_db('insert into RegisteredUser (name, email) values(?,?)', 
-                     [request.form['name'], request.form['email']])
+            query_db('insert into RegisteredUser (name, email, password) values(?,?,?)',
+                     [request.form['name'], request.form['email'], request.form['password']])
             flash('You have successfully signed up.')
             return redirect(url_for('login'))
         else:
