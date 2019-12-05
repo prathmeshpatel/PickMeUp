@@ -53,7 +53,7 @@
 
         if (type=="mood"){
           var mood_num = 0;
-          for (index = 0; index < Emojis.length; index++) { 
+          for (index = 0; index < Emojis.length; index++) {
             if (info.event.title==Emojis[index]){
               mood_num = index;
             }
@@ -168,6 +168,14 @@
           <div class='fc-event' id='mood'>😐</div>
           <div class='fc-event' id='mood'>😕</div>
           <div class='fc-event' id='mood'>😥 </div>
+      <p>
+        <h4>Visualize Trends!</h4>
+        <form action="line-chart.html">
+          <input type="submit" value="Line Chart" />
+        </form>
+        <form action="pie-chart.html">
+          <input type="submit" value="Pie Chart" />
+        </form>
       </div>
     </p>
   </div>
