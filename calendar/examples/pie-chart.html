@@ -35,7 +35,7 @@
     <div id="logo-circle">
       <img src="../images/logo-1.svg" alt="Logo">
     </div>
-    <h1> Pie Chart!  </h1>
+    <h1> Daily Trends </h1>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
@@ -58,28 +58,14 @@
               ]);
 
               var options = {
-                title: 'My Daily Activities',
+                title: 'Your Average Day',
                 pieHole: 0.4,
               };
-
               var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
               chart.draw(data, options);
             }
-
-
-
-
-
-
 </script>
-
-
-
-
-
     </div>
-
     <div style='clear:both'></div>
   </div>
 </body>
