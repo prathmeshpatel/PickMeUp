@@ -34,7 +34,7 @@
     <div id="logo-circle">
       <img src="../images/logo-1.svg" alt="Logo">
     </div>
-    <h1> November Trends!  </h1>
+    <h1> Monthly Trends </h1>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <div id="chart_div"></div>
     <div id='chart'>
@@ -56,6 +56,7 @@
             ]);
 
             var options = {
+              title: 'November 2019',
               hAxis: {
                 title: 'Day of Month'
               },
@@ -65,15 +66,8 @@
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
             chart.draw(data, options);
           }
-</script>
-
-
-
-
-
+    </script>
     </div>
-
-    <div style='clear:both'></div>
   </div>
 </body>
 </html>
