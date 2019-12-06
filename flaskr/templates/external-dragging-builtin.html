@@ -63,27 +63,37 @@
         var type = info.draggedEl.getAttribute("id");
         var date = info.event.start.getMonth() + "/" + info.event.start.getDate() + "/" + info.event.start.getFullYear();
         var duration = 1;
-
-        if (type=="mood"){
-          var mood_num = 0;
-          for (index = 0; index < Emojis.length; index++) { 
-            if (info.event.title==Emojis[index]){
-              mood_num = index;
-            }
-          }
-        alert(info.event.title + " " + mood_num + " is your " + type + " on " + date);
-      }
-      else (
-        alert(info.event.title + " duration is now " + duration))
-        /*$.ajax({
+        console.log(info.event.start);
+        $.ajax({
           data: {
-            date: info.event.start,
-            happiness: info.event.title,
+            'id': 
+            'date': info.event.start,
+            'happiness': info.event.title,
           },
           type: 'POST',
-          url: '/add'
-        });*/
-      },
+          url: "{{url_for('add_entry')}}"
+        });
+
+        if (type=="mood"){
+            var mood_num = 0;
+            for (index = 0; index < Emojis.length; index++) { 
+              if (info.event.title==Emojis[index]){
+                mood_num = index;
+              }
+            }
+          alert(info.event.title + " " + mood_num + " is your " + type + " on " + date);
+        }
+        else (
+          alert(info.event.title + " duration is now " + duration))
+          // $.ajax({
+          //   data: {
+          //     date: info.event.start,
+          //     happiness: info.event.title,
+          //   },
+          //   type: 'POST',
+          //   url: "{{url_for('add_entry')}}"
+          // });
+        },
 
       eventResize: function(info) {
         //VARIABLE DURATION GIVES HOURS AS A FLOAT
@@ -178,12 +188,12 @@ window.onload = function() {
     <div id='external-events'>
       <h4>Log your day!</h4>
       <div id='external-events-list'>
-        <div class='fc-event' id='activity'>Sleep</div>
-        <div class='fc-event' id='activity'>Exercise</div>
-        <div class='fc-event' id='activity'>Work</div>
-        <div class='fc-event' id='activity'>Meals</div>
-        <div class='fc-event' id='activity'>Social</div>
-        <div class='fc-event' id='activity'>Downtime</div>
+        <div class='fc-event' id='Sleep'>Sleep</div>
+        <div class='fc-event' id='Exercise'>Exercise</div>
+        <div class='fc-event' id='Work'>Work</div>
+        <div class='fc-event' id='Meals'>Meals</div>
+        <div class='fc-event' id='Social'>Social</div>
+        <div class='fc-event' id='Downtime'>Downtime</div>
       <p>
         <h4>Log your mood!</h4>
           <div class='fc-event' id='mood'>😊</div>

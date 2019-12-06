@@ -105,13 +105,11 @@ def show_entries():
 @app.route('/add', methods=['POST'])
 def add_entry():
     global current_user
+    print(request.form)
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
-    query_db('insert into Mood (email, date, happiness) values (?, ?, ?)',
-             [current_user.email, request.form['date'], request.form['happiness']])
-    # print([x['date'] for x in query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])])
     flash('New mood was successfully posted.')
-    return redirect(url_for('show_entries'))
+    # return redirect(url_for('show_entries'))
 
 
 @app.route('/calendar')
@@ -125,7 +123,7 @@ def show_cal():
     cur.execute('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
     r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
     cur.connection.close()
-    print(r[0] if r else None)
+    # print(r[0] if r else None)
     mood = r[0] if r else None
     # moods = [dict(zip([key[0] for key in cursor.description], row)) for row in mood]
     # print(json.dumps({'mood': moods}))
