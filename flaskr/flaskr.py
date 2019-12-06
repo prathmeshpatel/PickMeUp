@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-    render_template, flash
+    render_template, flash, json
 
 app = Flask(__name__)  # create the application instance
 app.config.from_object(__name__)  # load config from this file, flaskr.py
@@ -84,9 +84,10 @@ def initdb_command():
 
 
 def query_db(query, args=(), one=False):
-    print("HEY")
+    # print("HEY")
     db = get_db()
-    cur = db.execute(query, args)
+    cursor = db.cursor()
+    cur = cursor.execute(query, args)
     rv = cur.fetchall()
     db.commit()
     return rv if rv else None
@@ -108,7 +109,7 @@ def add_entry():
         return redirect(url_for('login'))
     query_db('insert into Mood (email, date, happiness) values (?, ?, ?)',
              [current_user.email, request.form['date'], request.form['happiness']])
-    print([x['date'] for x in query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])])
+    # print([x['date'] for x in query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])])
     flash('New mood was successfully posted.')
     return redirect(url_for('show_entries'))
 
@@ -118,8 +119,17 @@ def show_cal():
     global current_user
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
-    mood = rows_to_json(query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email]))
-    return render_template('external-dragging-builtin.html', mood=mood)
+    mood = query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
+    db = get_db()
+    cur = db.cursor()
+    cur.execute('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
+    r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
+    cur.connection.close()
+    print(r[0] if r else None)
+    mood = r[0] if r else None
+    # moods = [dict(zip([key[0] for key in cursor.description], row)) for row in mood]
+    # print(json.dumps({'mood': moods}))
+    return render_template('external-dragging-builtin.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])

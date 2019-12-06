@@ -2,18 +2,17 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<link href='../packages/core/main.css' rel='stylesheet' />
-<link href='../packages/daygrid/main.css' rel='stylesheet' />
-<link href='../packages/timegrid/main.css' rel='stylesheet' />
-<script src='../packages/core/main.js'></script>
-<script src='../packages/interaction/main.js'></script>
-<script src='../packages/daygrid/main.js'></script>
-<script src='../packages/timegrid/main.js'></script>
+<link href='static/packages/core/main.css' rel='stylesheet' />
+<link href='static/packages/daygrid/main.css' rel='stylesheet' />
+<link href='static/packages/timegrid/main.css' rel='stylesheet' />
+<script src='static/packages/core/main.js'></script>
+<script src='static/packages/interaction/main.js'></script>
+<script src='static/packages/daygrid/main.js'></script>
+<script src='static/packages/timegrid/main.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
-    // mood = JSON.parse({{ mood | tojson }});
-    // data = JSON.parse({{ data | tojson }});
     var Calendar = FullCalendar.Calendar;
     var Draggable = FullCalendarInteraction.Draggable
     var Emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
