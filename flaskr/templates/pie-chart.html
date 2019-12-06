@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<!-- change this to reference new style sheet -->
+<!-- <link href='../packages/core/main.css' rel='stylesheet' /> -->
+
+<style>
+  body {
+    margin-top: 10px;
+    font-size: 14px;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  }
+  #logo-circle{
+      height: 80px;
+      width: 230px;
+      float: left;
+      margin-left: 0px;
+  }
+  #wrap {
+    width: 1100px;
+    margin: 0 auto;
+  }
+
+  #chart {
+    margin-top: 0px;
+    float: right;
+    width: 900px;
+  }
+</style>
+</head>
+<body>
+
+  <div id='wrap'>
+    <div id="logo-circle">
+      <img src="../images/logo-1.svg" alt="Logo">
+    </div>
+    <h1> Daily Trends </h1>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+
+    <div id='chart'>
+      <script>
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+              // HARD CODED DATA -- this is where we will need to request query results
+              var data = google.visualization.arrayToDataTable([
+                ['Activity', 'Average Hours per Day'],
+                ['Sleep',    7],
+                ['Exercise', 2],
+                ['Work',     11],
+                ['Meals',      2],
+                ['Social',  2],
+                ['Downtime', 2]
+              ]);
+
+              var options = {
+                title: 'Your Average Day',
+                pieHole: 0.4,
+              };
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              chart.draw(data, options);
+            }
+</script>
+    </div>
+    <div style='clear:both'></div>
+  </div>
+</body>
+</html>
