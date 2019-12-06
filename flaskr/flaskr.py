@@ -32,7 +32,6 @@ def connect_db():
     rv.row_factory = sqlite3.Row
     return rv
 
-
 def get_db():
     """Opens a new database connection if there is none yet for the
     current application context.
