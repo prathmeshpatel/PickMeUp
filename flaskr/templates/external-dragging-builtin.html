@@ -66,7 +66,7 @@
         console.log(info.event.start);
         $.ajax({
           data: {
-            'id': 
+            'id': type,
             'date': info.event.start,
             'happiness': info.event.title,
           },
@@ -116,17 +116,6 @@
     calendar.render();
 
   });
-
-$.post( "/postmethod", {
-      canvas_data: JSON.stringify(outputData)
-    }, function(err, req, resp){
-      window.location.href = "/results/"+resp["responseJSON"]["uuid"];  
-    });
-window.onload = function() {
-       //when the document is finished loading, replace everything
-       //between the <a ...> </a> tags with the value of splitText
-   document.getElementById("emoji").innerHTML=splitText;
-} 
 </script>
 <style>
   body {
