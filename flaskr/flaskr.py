@@ -98,7 +98,11 @@ def show_entries():
     global current_user
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
+    print (current_user)
     mood = query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
+    print (mood)
+    if mood == None:
+        mood = []
     return render_template('show_entries.html', mood=mood, user=current_user)
 
 
@@ -153,7 +157,10 @@ def login():
     error = None
     if request.method == 'POST':
         q = [x['email'] for x in query_db('select email from RegisteredUser')]
-        p = [x['password'] for x in query_db('select password from RegisteredUser where email = ?', [request.form['email']])]
+        passwordQuery = query_db('select password from RegisteredUser where email = ?', [request.form['email']])
+        if passwordQuery==None:
+            passwordQuery=[]
+        p = [x['password'] for x in passwordQuery]
         if request.form['email'] not in q:
             error = 'Invalid email. If you do not have an account, please sign up.'
         elif request.form['password'] not in p:
