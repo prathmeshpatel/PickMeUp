@@ -64,5 +64,6 @@ CREATE TABLE Downtime
 CREATE TABLE Mood
 (email VARCHAR(256) NOT NULL REFERENCES RegisteredUser(email),
 date DATE NOT NULL,
+happiness INTEGER NOT NULL CHECK(happiness >=1 AND happiness <=5),
 PRIMARY KEY (email, date)
 );
