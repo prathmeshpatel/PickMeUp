@@ -133,7 +133,27 @@ def show_cal():
     # print(json.dumps({'mood': moods}))
     return render_template('external-dragging-builtin.html')
 
+@app.route('/monthlytrends')
+def monthly(): 
+    global current_user
+    if not session.get('logged_in') or not current_user: 
+        return redirect(url_for('login'))
+    return render_template('monthly.html')
 
+@app.route('/weeklytrends')
+def weekly(): 
+    global current_user
+    if not session.get('logged_in') or not current_user: 
+        return redirect(url_for('login'))
+    return render_template('weekly.html')
+
+
+@app.route('/dailytrends')
+def daily(): 
+    global current_user
+    if not session.get('logged_in') or not current_user: 
+        return redirect(url_for('login'))
+    return render_template('daily.html')
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     global current_user
