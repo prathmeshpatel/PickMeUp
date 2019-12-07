@@ -13,7 +13,6 @@ CREATE TABLE Sleep
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
  quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date)
  );
@@ -23,7 +22,6 @@ CREATE TABLE Exercise
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
  quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date)
  );
@@ -33,7 +31,6 @@ CREATE TABLE Work
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
  quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date)
  );
@@ -43,7 +40,6 @@ CREATE TABLE Meals
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
  quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date)
  );
@@ -53,7 +49,6 @@ CREATE TABLE Social
 date DATE NOT NULL,
 start_time TIME (0) NOT NULL,
 end_time TIME (0) NOT NULL,
-hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
 quality DECIMAL(4,2) NOT NULL
 PRIMARY KEY (email, date)
  );
@@ -63,7 +58,6 @@ CREATE TABLE Downtime
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
  quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date));
 
