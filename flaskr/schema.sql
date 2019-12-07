@@ -14,6 +14,7 @@ CREATE TABLE Sleep
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
  hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
+ quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date)
  );
 
@@ -23,6 +24,7 @@ CREATE TABLE Exercise
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
  hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
+ quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date)
  );
 
@@ -32,6 +34,7 @@ CREATE TABLE Work
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
  hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
+ quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date)
  );
 
@@ -41,6 +44,7 @@ CREATE TABLE Meals
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
  hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
+ quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date)
  );
 
@@ -50,6 +54,7 @@ date DATE NOT NULL,
 start_time TIME (0) NOT NULL,
 end_time TIME (0) NOT NULL,
 hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
+quality DECIMAL(4,2) NOT NULL
 PRIMARY KEY (email, date)
  );
 
@@ -59,6 +64,7 @@ CREATE TABLE Downtime
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
  hours DECIMAL(4, 2) NOT NULL CHECK(hours <= 24.00),
+ quality DECIMAL(4,2) NOT NULL
  PRIMARY KEY (email, date));
 
 CREATE TABLE Mood
