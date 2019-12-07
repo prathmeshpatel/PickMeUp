@@ -15,7 +15,6 @@
   document.addEventListener('DOMContentLoaded', function() {
     var Calendar = FullCalendar.Calendar;
     var Draggable = FullCalendarInteraction.Draggable
-    var Emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
 
     /* initialize the external events
     -----------------------------------------------------------------*/
@@ -64,27 +63,109 @@
         var date = info.event.start.getMonth() + "/" + info.event.start.getDate() + "/" + info.event.start.getFullYear();
         var duration = 1;
         console.log(info.event.start);
-        $.ajax({
-          data: {
-            'id': type,
-            'date': info.event.start,
-            'happiness': info.event.title,
-          },
-          type: 'POST',
-          url: "{{url_for('add_entry')}}"
-        });
-
-        if (type=="mood"){
-            var mood_num = 0;
-            for (index = 0; index < Emojis.length; index++) { 
-              if (info.event.title==Emojis[index]){
-                mood_num = index;
-              }
-            }
-          alert(info.event.title + " " + mood_num + " is your " + type + " on " + date);
+        console.log(type);
+        if (type == "Mood") {
+          var emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
+          console.log(emojis);
+          var index = emojis.indexOf(info.event.title); // 1
+          console.log(index);
+          $.ajax({
+            data: {
+              'id': type,
+              'date': info.event.start,
+              'happiness': index,
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
         }
-        else (
-          alert(info.event.title + " duration is now " + duration))
+        
+         if (type == "Exercise") {
+          console.log(index);
+          $.ajax({
+            data: {
+              'id': type,
+              'startTime': info.event.start,
+              'endTime': info.event.end,
+              
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
+        }
+        
+        if (type == "Work") {
+          console.log(index);
+          $.ajax({
+            data: {
+              'id': type,
+              'startTime': info.event.start,
+              'endTime': info.event.end,
+              
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
+        }
+        
+        if (type == "Meals") {
+          console.log(index);
+          $.ajax({
+            data: {
+              'id': type,
+              'startTime': info.event.start,
+              'endTime': info.event.end,
+              
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
+        }
+        
+        if (type == "Social") {
+          console.log(index);
+          $.ajax({
+            data: {
+              'id': type,
+              'startTime': info.event.start,
+              'endTime': info.event.end,
+              
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
+        }
+        
+        if (type == "Downtime") {
+          console.log(index);
+          $.ajax({
+            data: {
+              'id': type,
+              'startTime': info.event.start,
+              'endTime': info.event.end,
+              
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
+        }
+        
+        if (type == "Sleep") {
+          console.log(index);
+          $.ajax({
+            data: {
+              'id': type,
+              'startTime': info.event.start,
+              'endTime': info.event.end,
+              
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
+        }
+        
+        else {
+          alert(info.event.title + " duration is now " + duration);
           // $.ajax({
           //   data: {
           //     date: info.event.start,
@@ -93,8 +174,8 @@
           //   type: 'POST',
           //   url: "{{url_for('add_entry')}}"
           // });
-        },
-
+        }
+      },
       eventResize: function(info) {
         //VARIABLE DURATION GIVES HOURS AS A FLOAT
         var hours_duration = parseInt(info.event.end.getHours())-parseInt(info.event.start.getHours());
@@ -185,11 +266,11 @@
         <div class='fc-event' id='Downtime'>Downtime</div>
       <p>
         <h4>Log your mood!</h4>
-          <div class='fc-event' id='mood'>😊</div>
-          <div class='fc-event' id='mood'>😌 </div>
-          <div class='fc-event' id='mood'>😐</div>
-          <div class='fc-event' id='mood'>😕</div>
-          <div class='fc-event' id='mood'>😥 </div>
+          <div class='fc-event' id='Mood'>😊</div>
+          <div class='fc-event' id='Mood'>😌 </div>
+          <div class='fc-event' id='Mood'>😐</div>
+          <div class='fc-event' id='Mood'>😕</div>
+          <div class='fc-event' id='Mood'>😥 </div>
         <h4>Visualize Trends!</h4>
             <form action="line-chart.html">
               <input type="submit" value="Monthly Trends" />

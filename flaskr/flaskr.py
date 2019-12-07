@@ -98,22 +98,47 @@ def show_entries():
     global current_user
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
-    print (current_user)
     mood = query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
-    print (mood)
-    if mood == None:
-        mood = []
     return render_template('show_entries.html', mood=mood, user=current_user)
 
 
 @app.route('/add', methods=['POST'])
 def add_entry():
     global current_user
-    print(request.form)
+    if not request.form:
+        return
+    table_id = request.form['id']
+    if table_id == "Mood":
+        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
+                 [current_user.email, request.form['date'], request.form['happiness']])
+    elif table_id == "Sleep":
+        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
+                 [current_user.email, request.form['date'], request.form['happiness']])
+        pass
+    elif table_id == "Exercise":
+        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
+                 [current_user.email, request.form['date'], request.form['happiness']])
+        pass
+    elif table_id == "Work":
+        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
+                 [current_user.email, request.form['date'], request.form['happiness']])
+        pass
+    elif table_id == "Meals":
+        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
+                 [current_user.email, request.form['date'], request.form['happiness']])
+        pass
+    elif table_id == "Social":
+        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
+                 [current_user.email, request.form['date'], request.form['happiness']])
+        pass
+    elif table_id == "Downtime":
+        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
+                 [current_user.email, request.form['date'], request.form['happiness']])
+        pass
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
     flash('New mood was successfully posted.')
-    # return redirect(url_for('show_entries'))
+    return
 
 
 @app.route('/calendar')
@@ -157,10 +182,7 @@ def login():
     error = None
     if request.method == 'POST':
         q = [x['email'] for x in query_db('select email from RegisteredUser')]
-        passwordQuery = query_db('select password from RegisteredUser where email = ?', [request.form['email']])
-        if passwordQuery==None:
-            passwordQuery=[]
-        p = [x['password'] for x in passwordQuery]
+        p = [x['password'] for x in query_db('select password from RegisteredUser where email = ?', [request.form['email']])]
         if request.form['email'] not in q:
             error = 'Invalid email. If you do not have an account, please sign up.'
         elif request.form['password'] not in p:
