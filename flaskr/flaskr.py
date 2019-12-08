@@ -128,18 +128,20 @@ def add_entry():
     elif table_id == "Work":
         query_db('insert into Work (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
                  [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
+        print(request.form['start_time'])
+        print(request.form['end_time'])
         pass
     elif table_id == "Meals":
         query_db('insert into Meals (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
-                 [current_user.email, request.form['date'],request.form['start_time'], request.form['end_time'], request.form['quality']])
+                 [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     elif table_id == "Social":
         query_db('insert into Social (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
-                 [current_user.email, request.form['date'],request.form['start_time'], request.form['end_time'], request.form['quality']])
+                 [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     elif table_id == "Downtime":
         query_db('insert into Downtime (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
-                 [current_user.email, request.form['date'],request.form['start_time'], request.form['end_time'], request.form['quality']])
+                 [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
