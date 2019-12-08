@@ -44,15 +44,15 @@
       droppable: true, // this allows things to be dropped onto the calendar
 
       eventDrop: function(event, delta, revertFunc) {  // On event drop, post to add entry to table
-        $.ajax({
-          data: {
-            date: JSON.stringify(event.start),
-          },
-          type: 'POST',
-          url: '/add',
-          contentType:"application/json",
-          dataType:"json"
-        });
+        // $.ajax({
+        //   data: {
+        //     date: JSON.stringify(event.start),
+        //   },
+        //   type: 'POST',
+        //   url: '/add',
+        //   contentType:"application/json",
+        //   dataType:"json"
+        // });
       },
 
       eventReceive: function(info) {
@@ -60,7 +60,9 @@
         //VARIABLE MOOD_NUM GIVES MOOD AS A NUMBER
         //VARIABLE DURATION INITIALIZES DURATION TO 1 BECAUSE WHEN DRAG TO CALENDAR, AUTO DURATION STARTS AT 1hr
         var type = info.draggedEl.getAttribute("id");
-        var date = info.event.start.getMonth() + "/" + info.event.start.getDate() + "/" + info.event.start.getFullYear();
+        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
+        console.log("TEST HERE");
+        console.log(date);
         var duration = 1;
         console.log(info.event.start);
         console.log(type);
@@ -72,108 +74,25 @@
           $.ajax({
             data: {
               'id': type,
-              'date': info.event.start,
+              'date': date,
               'happiness': index,
             },
             type: 'POST',
             url: "{{url_for('add_entry')}}"
           });
-        }
-        
-         if (type == "Exercise") {
-          console.log(index);
+        } else {
           $.ajax({
             data: {
               'id': type,
-              'startTime': info.event.start,
-              'endTime': info.event.end,
+              'date': date,
+              'start_time': info.event.start,
+              'end_time': info.event.end,
+              'quality': 1, 
               
             },
             type: 'POST',
             url: "{{url_for('add_entry')}}"
           });
-        }
-        
-        if (type == "Work") {
-          console.log(index);
-          $.ajax({
-            data: {
-              'id': type,
-              'startTime': info.event.start,
-              'endTime': info.event.end,
-              
-            },
-            type: 'POST',
-            url: "{{url_for('add_entry')}}"
-          });
-        }
-        
-        if (type == "Meals") {
-          console.log(index);
-          $.ajax({
-            data: {
-              'id': type,
-              'startTime': info.event.start,
-              'endTime': info.event.end,
-              
-            },
-            type: 'POST',
-            url: "{{url_for('add_entry')}}"
-          });
-        }
-        
-        if (type == "Social") {
-          console.log(index);
-          $.ajax({
-            data: {
-              'id': type,
-              'startTime': info.event.start,
-              'endTime': info.event.end,
-              
-            },
-            type: 'POST',
-            url: "{{url_for('add_entry')}}"
-          });
-        }
-        
-        if (type == "Downtime") {
-          console.log(index);
-          $.ajax({
-            data: {
-              'id': type,
-              'startTime': info.event.start,
-              'endTime': info.event.end,
-              
-            },
-            type: 'POST',
-            url: "{{url_for('add_entry')}}"
-          });
-        }
-        
-        if (type == "Sleep") {
-          console.log(index);
-          $.ajax({
-            data: {
-              'id': type,
-              'startTime': info.event.start,
-              'endTime': info.event.end,
-              
-            },
-            type: 'POST',
-            url: "{{url_for('add_entry')}}"
-          });
-        }
-        
-        else {
-          alert(info.event.title + " duration is now " + duration);
-          // $.ajax({
-          //   data: {
-          //     date: info.event.start,
-          //     happiness: info.event.title,
-          //   },
-          //   type: 'POST',
-          //   url: "{{url_for('add_entry')}}"
-          // });
         }
       },
       eventResize: function(info) {
@@ -272,13 +191,13 @@
           <div class='fc-event' id='Mood'>😕</div>
           <div class='fc-event' id='Mood'>😥 </div>
         <h4>Visualize Trends!</h4>
-            <form action="line-chart.html">
+            <form action="/monthlytrends">
               <input type="submit" value="Monthly Trends" />
             </form>
-            <form action="bar-chart.html">
+            <form action="/weeklytrends">
               <input type="submit" value="Weekly Trends" />
             </form>
-            <form action="pie-chart.html">
+            <form action="/dailytrends">
               <input type="submit" value="Daily Trends" />
             </form>
       </div>

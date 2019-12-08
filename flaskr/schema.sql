@@ -13,8 +13,8 @@ CREATE TABLE Sleep
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- quality DECIMAL(4,2) NOT NULL
- PRIMARY KEY (email, date)
+ quality DECIMAL(4,2) NOT NULL,
+ PRIMARY KEY (email, date, start_time)
  );
 
 CREATE TABLE Exercise
@@ -22,8 +22,8 @@ CREATE TABLE Exercise
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- quality DECIMAL(4,2) NOT NULL
- PRIMARY KEY (email, date)
+ quality DECIMAL(4,2) NOT NULL,
+ PRIMARY KEY (email, date, start_time)
  );
 
 CREATE TABLE Work
@@ -31,8 +31,8 @@ CREATE TABLE Work
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- quality DECIMAL(4,2) NOT NULL
- PRIMARY KEY (email, date)
+ quality DECIMAL(4,2) NOT NULL,
+ PRIMARY KEY (email, date, start_time)
  );
 
 CREATE TABLE Meals
@@ -40,8 +40,8 @@ CREATE TABLE Meals
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- quality DECIMAL(4,2) NOT NULL
- PRIMARY KEY (email, date)
+ quality DECIMAL(4,2) NOT NULL,
+ PRIMARY KEY (email, date, start_time)
  );
 
 CREATE TABLE Social
@@ -49,8 +49,8 @@ CREATE TABLE Social
 date DATE NOT NULL,
 start_time TIME (0) NOT NULL,
 end_time TIME (0) NOT NULL,
-quality DECIMAL(4,2) NOT NULL
-PRIMARY KEY (email, date)
+quality DECIMAL(4,2) NOT NULL,
+PRIMARY KEY (email, date, start_time)
  );
 
 CREATE TABLE Downtime
@@ -58,8 +58,8 @@ CREATE TABLE Downtime
  date DATE NOT NULL,
  start_time TIME (0) NOT NULL,
  end_time TIME (0) NOT NULL,
- quality DECIMAL(4,2) NOT NULL
- PRIMARY KEY (email, date));
+ quality DECIMAL(4,2) NOT NULL,
+ PRIMARY KEY (email, date, start_time));
 
 CREATE TABLE Mood
 (email VARCHAR(256) NOT NULL REFERENCES RegisteredUser(email),

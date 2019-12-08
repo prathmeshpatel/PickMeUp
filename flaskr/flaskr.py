@@ -99,7 +99,7 @@ def show_entries():
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
     mood = query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
-    if mood == None:
+    if mood is None:
         mood = []
     return render_template('show_entries.html', mood=mood, user=current_user)
 
@@ -110,37 +110,41 @@ def add_entry():
     if not request.form:
         return
     table_id = request.form['id']
+    table_date = request.form['date']
+    print(table_id)
+    print(table_date)
+
     if table_id == "Mood":
         query_db('insert into Mood (email, date, happiness) values(?,?,?)',
                  [current_user.email, request.form['date'], request.form['happiness']])
     elif table_id == "Sleep":
-        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
-                 [current_user.email, request.form['date'], request.form['happiness']])
+        query_db('insert into Sleep (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
+                 [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     elif table_id == "Exercise":
-        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
-                 [current_user.email, request.form['date'], request.form['happiness']])
+        query_db('insert into Exercise (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
+                 [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     elif table_id == "Work":
-        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
-                 [current_user.email, request.form['date'], request.form['happiness']])
+        query_db('insert into Work (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
+                 [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     elif table_id == "Meals":
-        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
-                 [current_user.email, request.form['date'], request.form['happiness']])
+        query_db('insert into Meals (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
+                 [current_user.email, request.form['date'],request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     elif table_id == "Social":
-        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
-                 [current_user.email, request.form['date'], request.form['happiness']])
+        query_db('insert into Social (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
+                 [current_user.email, request.form['date'],request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     elif table_id == "Downtime":
-        query_db('insert into Mood (email, date, happiness) values(?,?,?)',
-                 [current_user.email, request.form['date'], request.form['happiness']])
+        query_db('insert into Downtime (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
+                 [current_user.email, request.form['date'],request.form['start_time'], request.form['end_time'], request.form['quality']])
         pass
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
     flash('New mood was successfully posted.')
-    return
+    return 'OK'
 
 
 @app.route('/calendar')
@@ -185,7 +189,7 @@ def login():
     if request.method == 'POST':
         q = [x['email'] for x in query_db('select email from RegisteredUser')]
         passwordQuery = query_db('select password from RegisteredUser where email = ?', [request.form['email']])
-        if passwordQuery == None:
+        if passwordQuery is None:
             passwordQuery = []
         p = [x['password'] for x in passwordQuery]
         if request.form['email'] not in q:
@@ -202,7 +206,29 @@ def login():
             flash(f'Welcome Back, {name}!')
             return redirect(url_for('show_entries'))
     return render_template('login.html', error=error)
+    
+@app.route('/monthlytrends')
+def monthly(): 
+    global current_user
+    if not session.get('logged_in') or not current_user: 
+        return redirect(url_for('login'))
+    return render_template('monthly.html')
 
+@app.route('/weeklytrends')
+def weekly(): 
+    global current_user
+    if not session.get('logged_in') or not current_user: 
+        return redirect(url_for('login'))
+    return render_template('weekly.html')
+    #test
+
+
+@app.route('/dailytrends')
+def daily(): 
+    global current_user
+    if not session.get('logged_in') or not current_user: 
+        return redirect(url_for('login'))
+    return render_template('daily.html')
 
 @app.route('/logout')
 def logout():
