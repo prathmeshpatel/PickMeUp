@@ -39,14 +39,15 @@
     // console.log(g_info.event.start.toUTCString());
     var end = new Date(g_info.event.start.toUTCString());
     end.setHours(end.getHours() + 1);
-    // console.log(end.toUTCString());
-    g_info.event.end = end.toUTCString();
+    var n = end.toISOString();
+    var start = new Date(g_info.event.start.toUTCString());
+    var s = start.toISOString();    
     return $.ajax({
       data: {
         'id': g_type,
         'date': g_date,
-        'start_time': g_info.event.start,
-        'end_time': end.toUTCString(),
+        'start_time': s,
+        'end_time': n,
         'quality': quality, 
       },
       type: 'POST',
@@ -78,6 +79,31 @@
 
     var calendarEl = document.getElementById('calendar');
     var calendar = new Calendar(calendarEl, {
+      events: function(start, end, timezone, callback){
+        return $.ajax({
+              url: '/values',
+              type: 'GET',
+              dataType: 'json',
+              data: {
+                  start: '2018-12-01T08:00:00',
+                  end: '2020-12-05T08:00:00',
+              },
+              success: function(result) {
+      //             var events = [];
+      //             console.log(result);
+      //             result.forEach(function(obj) {
+      //                 console.log(obj);
+      //                 events.push({
+      //                     title: obj.title,
+      //                     start: new Date(obj.start).toISOString().substring(0, new Date(obj.start).toISOString().length - 1),
+      //                     end: new Date(obj.end).toISOString().substring(0, new Date(obj.end).toISOString().length - 1)
+      //                 });
+                      // console.log(events);
+      //             });
+      //             callback(events);
+              }
+          });
+      },
       plugins: [ 'interaction', 'dayGrid', 'timeGrid'],
       header: {
         left: 'prev,next today',
@@ -89,25 +115,26 @@
       eventDragStart: function(info){ // When begin dragging an element, delete that row from the database - OCCURS WHEN DRAG EVENT ON CALENDAR TO NEW LOCATION
         var type = info.event.title
         var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth() + 1) + "-" + info.event.start.getUTCDate();
-        var start_time = info.event.start;
-        // console.log(type)
+        var start_time = new Date(info.event.start.toUTCString());
+        var s = start_time.toISOString();    
+        console.log(s);
+        console.log(type);
         $.ajax({
           data: {
             'id': type,
             'date': date,
-            'start_time': start_time,
+            'start_time': s,
           },
           type: 'POST',
           url: "{{url_for('delete_entry')}}"
         });
       },
       eventDrop: function(info) {
-        // console.log(info.event.title)
+        console.log(info.event.title)
         var type = info.event.title;;
         var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
-        // console.log("drop");
-        // console.log(info.event.start);
-        // console.log(type);
+        console.log("drop");  
+        console.log(type);
         if (type == "Mood") {
           var emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
           // console.log(emojis);

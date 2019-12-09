@@ -20,12 +20,15 @@ current_user = None
 
 
 class User:
-    def __init__(self, name, email):
+    def __init__(self, name=None, email=None):
         self.name = name
         self.email = email
 
     def __repr__(self):
         return f'User({self.name}, {self.email})'
+    
+    def _get_activities(self):
+        return ["Sleep", "Mood", "Downtime", "Exercise", "Meals", "Work"]
 
 
 def connect_db():
@@ -85,6 +88,48 @@ def initdb_command():
     print('Initialized the database.')
 
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+
+def toJson():
+    db = get_db()
+    db.row_factory = dict_factory
+    u = User()
+    tables = u._get_activities()
+    # for each of the bables , select all the records from the table
+    allEntries = []
+    for table_name in tables:
+        if table_name == "Mood":
+            continue
+        conn = get_db()
+        conn.row_factory = dict_factory
+        cur1 = conn.cursor()
+        cur1.execute("SELECT * FROM " + table_name)
+        results = cur1.fetchall()
+        for row in results:
+            r = {}
+            r['title'] = table_name
+            r['start'] = row['start_time']
+            r['end'] = row['end_time']
+            allEntries.append(r)
+            print(results)
+        print(allEntries)
+    db.close()
+    return allEntries
+
+
+@app.route('/values', methods=['GET'])
+def get_all_entries():
+    print("here")
+    entries = toJson()
+    print(entries)
+    return json.dumps(entries)
+
+
 def query_db(query, args=(), one=False):
     # print("HEY")
     db = get_db()
@@ -128,10 +173,28 @@ def delete_entry():
     if not request.form:
         return
     table_id = request.form['id']
-    delete_from = f"delete from {table_id}"
     if table_id == "Mood":
-        query_db(delete_from + ' where email = (?) and date = (?)',
-                 [current_user.email, request.form['date']])
+        query_db('delete from Mood where email = (?) and date = (?)',
+            [current_user.email, request.form['date']])
+    elif table_id == "Sleep":
+        query_db('delete from Sleep where email = (?) and date = (?) and start_time = (?)',
+            [current_user.email, request.form['date'], request.form['start_time']])
+    elif table_id == "Exercise":
+        query_db('delete from Exercise where email = (?) and date = (?) and start_time = (?)',
+            [current_user.email, request.form['date'], request.form['start_time']])
+    elif table_id == "Work":
+        query_db('delete from Work where email = (?) and date = (?) and start_time = (?)',
+                 [current_user.email, request.form['date'], request.form['start_time']])
+    elif table_id == "Meals":
+        query_db('delete from Meals where email = (?) and date = (?) and start_time = (?)',
+                 [current_user.email, request.form['date'], request.form['start_time']])
+    elif table_id == "Social":
+        query_db('delete from Social where email = (?) and date = (?) and start_time = (?)',
+                 [current_user.email, request.form['date'], request.form['start_time']])
+    elif table_id == "Downtime":
+        query_db('delete from Downtime where email = (?) and date = (?) and start_time = (?)',
+                 [current_user.email, request.form['date'], request.form['start_time']])
+    print(table_id, current_user.email, request.form['date'], request.form['start_time'])
     print("deleted row")
     return 'OK'
 
@@ -181,12 +244,12 @@ def show_cal():
         return redirect(url_for('login'))
     mood = query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
     db = get_db()
-    cur = db.cursor()
-    cur.execute('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
-    r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
-    cur.connection.close()
+    # db.row_factory = dict_factory
+    # cur.execute('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
+    # r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
+    # cur.connection.close()
     # print(r[0] if r else None)
-    mood = r[0] if r else None
+    # mood = r[0] if r else None
     # moods = [dict(zip([key[0] for key in cursor.description], row)) for row in mood]
     # print(json.dumps({'mood': moods}))
     return render_template('external-dragging-builtin.html')
