@@ -10,6 +10,8 @@
 <script src='static/packages/daygrid/main.js'></script>
 <script src='static/packages/timegrid/main.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://unpkg.com/tooltip.js"></script>
 <script>
   var quality = 1;
   var g_type = null;
@@ -21,26 +23,30 @@
     g_type = type;
     g_date = date;
     g_info = info;
-    console.log(type);
-    console.log(info);
+    // console.log(type);
+    // console.log(info);
   }
   function submit_form() {
     document.getElementById("myForm").style.display = "none";
     quality = document.getElementById('quality').value;
-    console.log(quality);
-    console.log(g_type);
-    console.log(g_info);
+    // console.log(quality);
+    // console.log(g_type);
+    // console.log(g_info);
     ajax_other(quality);
   }
   function ajax_other(quality) {
-    console.log("Quality: " + quality);
-    console.log(g_info);
+    // console.log("Quality: " + quality);
+    // console.log(g_info.event.start.toUTCString());
+    var end = new Date(g_info.event.start.toUTCString());
+    end.setHours(end.getHours() + 1);
+    // console.log(end.toUTCString());
+    g_info.event.end = end.toUTCString();
     return $.ajax({
       data: {
         'id': g_type,
         'date': g_date,
         'start_time': g_info.event.start,
-        'end_time': g_info.event.end,
+        'end_time': end.toUTCString(),
         'quality': quality, 
       },
       type: 'POST',
@@ -80,34 +86,57 @@
       },
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
-
-      eventDrop: function(event, delta, revertFunc) {  // On event drop, post to add entry to table
-        // $.ajax({
-        //   data: {
-        //     date: JSON.stringify(event.start),
-        //   },
-        //   type: 'POST',
-        //   url: '/add',
-        //   contentType:"application/json",
-        //   dataType:"json"
-        // });
-        console.log("drop");
+      eventDragStart: function(info){ // When begin dragging an element, delete that row from the database - OCCURS WHEN DRAG EVENT ON CALENDAR TO NEW LOCATION
+        var type = info.event.title
+        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth() + 1) + "-" + info.event.start.getUTCDate();
+        var start_time = info.event.start;
+        // console.log(type)
+        $.ajax({
+          data: {
+            'id': type,
+            'date': date,
+            'start_time': start_time,
+          },
+          type: 'POST',
+          url: "{{url_for('delete_entry')}}"
+        });
       },
-
+      eventDrop: function(info) {
+        // console.log(info.event.title)
+        var type = info.event.title;;
+        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
+        // console.log("drop");
+        // console.log(info.event.start);
+        // console.log(type);
+        if (type == "Mood") {
+          var emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
+          // console.log(emojis);
+          var index = emojis.indexOf(info.event.title); // 1
+          // console.log(index);
+          $.ajax({
+            data: {
+              'id': type,
+              'date': date,
+              'happiness': index,
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
+        } else {
+          open_form(type, date, info);
+        }
+      },
       eventReceive: function(info) {
-        //VARIABLE DATE GIVES DATE AS A STRING
-        //VARIABLE MOOD_NUM GIVES MOOD AS A NUMBER
-        //VARIABLE DURATION INITIALIZES DURATION TO 1 BECAUSE WHEN DRAG TO CALENDAR, AUTO DURATION STARTS AT 1hr
         var type = info.draggedEl.getAttribute("id");
         var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
         var duration = 1;
-        console.log(info.event.start);
-        console.log(type);
+        // console.log(info.event.start);
+        // console.log(type);
         if (type == "Mood") {
           var emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
-          console.log(emojis);
+          // console.log(emojis);
           var index = emojis.indexOf(info.event.title); // 1
-          console.log(index);
+          // console.log(index);
           $.ajax({
             data: {
               'id': type,
@@ -122,25 +151,21 @@
         }
       },
       eventResize: function(info) {
-        //VARIABLE DURATION GIVES HOURS AS A FLOAT
-        var hours_duration = parseInt(info.event.end.getHours())-parseInt(info.event.start.getHours());
-        var minutes_duration = parseFloat((info.event.end.getMinutes()-info.event.start.getMinutes())/60);
-        var duration = hours_duration+minutes_duration;
-        alert(info.event.title + " duration is now " + duration);
-        if (!confirm("is this okay?")) {
-          info.revert();
-        }
-        /*$.ajax({
+        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
+        var type = info.event.title;
+        $.ajax({
           data: {
-            duration: duration,
+            'id': type,
+            'date': date,
+            'start_time': info.event.start,
+            'end_time': info.event.end,
           },
           type: 'POST',
-          url: '/insert'
-        });*/
+          url: "{{url_for('entry_resize')}}"
+        });
       }
     });
     calendar.render();
-
   });
 
 </script>
@@ -286,7 +311,7 @@
     </div>
     <div id='external-events'>
       <h4>Log your day!</h4>
-      <div id='external-events-list'>
+      <div id='external-events-list'>-
         <div class='fc-event' id='Sleep'>Sleep</div>
         <div class='fc-event' id='Exercise'>Exercise</div>
         <div class='fc-event' id='Work'>Work</div>

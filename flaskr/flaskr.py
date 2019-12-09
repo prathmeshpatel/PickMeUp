@@ -18,6 +18,7 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 idCount = 0
 current_user = None
 
+
 class User:
     def __init__(self, name, email):
         self.name = name
@@ -25,6 +26,7 @@ class User:
 
     def __repr__(self):
         return f'User({self.name}, {self.email})'
+
 
 def connect_db():
     """Connects to the specific database."""
@@ -104,45 +106,68 @@ def show_entries():
     return render_template('show_entries.html', mood=mood, user=current_user)
 
 
+@app.route('/resize', methods=['POST'])
+def entry_resize():
+    global current_user
+    if not request.form:
+        return
+    if not session.get('logged_in') or not current_user:
+        return redirect(url_for('login'))
+    table_id, e_date, e_start, new_end = request.form['id'], request.form['date'], request.form['start_time'], request.form['end_time']
+    print(table_id, e_date, e_start, new_end)
+    update = f"update {table_id}"
+    query_db(update + ' set end_time = (?) WHERE email = (?) and date = (?) and start_time = (?)', [new_end, current_user.email, e_date, e_start])
+    return 'OK'
+
+
+@app.route('/delete', methods=['POST'])
+def delete_entry():
+    global current_user
+    if not session.get('logged_in') or not current_user:
+        return redirect(url_for('login'))
+    if not request.form:
+        return
+    table_id = request.form['id']
+    delete_from = f"delete from {table_id}"
+    if table_id == "Mood":
+        query_db(delete_from + ' where email = (?) and date = (?)',
+                 [current_user.email, request.form['date']])
+    print("deleted row")
+    return 'OK'
+
+
 @app.route('/add', methods=['POST'])
 def add_entry():
     global current_user
     if not request.form:
         return
+    if not session.get('logged_in') or not current_user:
+        return redirect(url_for('login'))
     table_id = request.form['id']
-    table_date = request.form['date']
-    print(table_id)
-    print(table_date)
-
+    print(request.form['end_time'])
     if table_id == "Mood":
         query_db('insert into Mood (email, date, happiness) values(?,?,?)',
                  [current_user.email, request.form['date'], request.form['happiness']])
     elif table_id == "Sleep":
         query_db('insert into Sleep (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
                  [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
-        pass
     elif table_id == "Exercise":
         query_db('insert into Exercise (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
                  [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
-        pass
     elif table_id == "Work":
         query_db('insert into Work (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
                  [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
         print(request.form['start_time'])
         print(request.form['end_time'])
-        pass
     elif table_id == "Meals":
         query_db('insert into Meals (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
                  [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
-        pass
     elif table_id == "Social":
         query_db('insert into Social (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
                  [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
-        pass
     elif table_id == "Downtime":
         query_db('insert into Downtime (email, date, start_time, end_time, quality) values(?,?,?,?,?)',
                  [current_user.email, request.form['date'], request.form['start_time'], request.form['end_time'], request.form['quality']])
-        pass
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
     flash('New mood was successfully posted.')
@@ -171,7 +196,7 @@ def show_cal():
 def signup():
     global current_user
     if session.get('logged_in') and current_user:
-        return redirect(url_for('show_entries'))
+        return redirect(url_for('show_cal'))
     error = None
     if request.method == 'POST':
         if request.form['email'] not in query_db('select email from RegisteredUser'):
@@ -206,31 +231,33 @@ def login():
 
             session['logged_in'] = True
             flash(f'Welcome Back, {name}!')
-            return redirect(url_for('show_entries'))
+            return redirect(url_for('show_cal'))
     return render_template('login.html', error=error)
-    
+
+
 @app.route('/monthlytrends')
-def monthly(): 
+def monthly():
     global current_user
-    if not session.get('logged_in') or not current_user: 
+    if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
     return render_template('monthly.html')
 
+
 @app.route('/weeklytrends')
-def weekly(): 
+def weekly():
     global current_user
-    if not session.get('logged_in') or not current_user: 
+    if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
     return render_template('weekly.html')
-    #test
 
 
 @app.route('/dailytrends')
-def daily(): 
+def daily():
     global current_user
-    if not session.get('logged_in') or not current_user: 
+    if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
     return render_template('daily.html')
+
 
 @app.route('/logout')
 def logout():
