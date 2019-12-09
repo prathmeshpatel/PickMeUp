@@ -11,15 +11,50 @@
 <script src='static/packages/timegrid/main.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-
+  var quality = 1;
+  var g_type = null;
+  var g_info = null;
+  var g_date = null;
+  function open_form(type, date, info) {
+    document.getElementById("myForm").style.display = "block";
+    g_type = type;
+    g_date = date;
+    g_info = info;
+    console.log(type);
+    console.log(info);
+  }
+  function submit_form() {
+    document.getElementById("myForm").style.display = "none";
+    quality = document.getElementById('quality').value;
+    console.log(quality);
+    console.log(g_type);
+    console.log(g_info);
+    ajax_other(quality);
+  }
+  function ajax_other(quality) {
+    console.log("Quality: " + quality);
+    console.log(g_info);
+    return $.ajax({
+      data: {
+        'id': g_type,
+        'date': g_date,
+        'start_time': g_info.event.start,
+        'end_time': g_info.event.end,
+        'quality': quality, 
+      },
+      type: 'POST',
+      url: "{{url_for('add_entry')}}"
+    });
+  }
   document.addEventListener('DOMContentLoaded', function() {
     var Calendar = FullCalendar.Calendar;
     var Draggable = FullCalendarInteraction.Draggable
-    var Emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
-
+    function handleForm(event) { 
+      event.preventDefault(); 
+    } 
+    document.getElementById("myForm").addEventListener('submit', handleForm);
     /* initialize the external events
     -----------------------------------------------------------------*/
-
     var containerEl = document.getElementById('external-events-list');
     new Draggable(containerEl, {
       itemSelector: '.fc-event',
@@ -29,10 +64,8 @@
         }
       }
     });
-
     /* initialize the calendar
     -----------------------------------------------------------------*/
-
     var calendarEl = document.getElementById('calendar');
     var calendar = new Calendar(calendarEl, {
       plugins: [ 'interaction', 'dayGrid', 'timeGrid'],
@@ -43,58 +76,47 @@
       },
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
-
       eventDrop: function(event, delta, revertFunc) {  // On event drop, post to add entry to table
-        $.ajax({
-          data: {
-            date: JSON.stringify(event.start),
-          },
-          type: 'POST',
-          url: '/add',
-          contentType:"application/json",
-          dataType:"json"
-        });
+        // $.ajax({
+        //   data: {
+        //     date: JSON.stringify(event.start),
+        //   },
+        //   type: 'POST',
+        //   url: '/add',
+        //   contentType:"application/json",
+        //   dataType:"json"
+        // });
+        console.log("drop");
       },
-
       eventReceive: function(info) {
         //VARIABLE DATE GIVES DATE AS A STRING
         //VARIABLE MOOD_NUM GIVES MOOD AS A NUMBER
         //VARIABLE DURATION INITIALIZES DURATION TO 1 BECAUSE WHEN DRAG TO CALENDAR, AUTO DURATION STARTS AT 1hr
         var type = info.draggedEl.getAttribute("id");
-        var date = info.event.start.getMonth() + "/" + info.event.start.getDate() + "/" + info.event.start.getFullYear();
+        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
         var duration = 1;
         console.log(info.event.start);
-        $.ajax({
-          data: {
-            'id': type,
-            'date': info.event.start,
-            'happiness': info.event.title,
-          },
-          type: 'POST',
-          url: "{{url_for('add_entry')}}"
-        });
-
-        if (type=="mood"){
-            var mood_num = 0;
-            for (index = 0; index < Emojis.length; index++) { 
-              if (info.event.title==Emojis[index]){
-                mood_num = index;
-              }
-            }
-          alert(info.event.title + " " + mood_num + " is your " + type + " on " + date);
+        console.log(type);
+        if (type == "Mood") {
+          var emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
+          console.log(emojis);
+          var index = emojis.indexOf(info.event.title); // 1
+          console.log(index);
+          info.event.setAllDay(true); 
+          $.ajax({
+            data: {
+              'id': type,
+              'date': date,
+              'happiness': index,
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
+        } else {
+          info.event.setAllDay(false); 
+          open_form(type, date, info);
         }
-        else (
-          alert(info.event.title + " duration is now " + duration))
-          // $.ajax({
-          //   data: {
-          //     date: info.event.start,
-          //     happiness: info.event.title,
-          //   },
-          //   type: 'POST',
-          //   url: "{{url_for('add_entry')}}"
-          // });
-        },
-
+      },
       eventResize: function(info) {
         //VARIABLE DURATION GIVES HOURS AS A FLOAT
         var hours_duration = parseInt(info.event.end.getHours())-parseInt(info.event.start.getHours());
@@ -114,7 +136,6 @@
       }
     });
     calendar.render();
-
   });
 </script>
 <style>
@@ -122,6 +143,77 @@
     margin-top: 10px;
     font-size: 14px;
     font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  }
+  /* Add styles to the form container */
+  .form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+  }
+  /* Button used to open the contact form - fixed at the bottom of the page */
+  .open-button {
+    background-color: #555;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    position: fixed;
+    bottom: 23px;
+    right: 28px;
+    width: 280px;
+  }
+    /* The popup form - hidden by default */
+  .form-popup {
+    background: rgba(100, 100, 100, 0.15) !important;
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+  }
+  /* Full-width input fields */
+  .form-container input[type=integer], .form-container {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+  /* When the inputs get focus, do something */
+  .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+  /* Set a style for the submit/login button */
+  .form-container .btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 0.8;
+  }
+  /* Add a red background color to the cancel button */
+  .form-container .cancel {
+    background-color: red;
+  }
+  /* Add some hover effects to buttons */
+  .form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+  }
+  .modal-body .form-horizontal .col-sm-2,
+  .modal-body .form-horizontal .col-sm-10 {
+      width: 100%
+  }
+  .modal-body .form-horizontal .control-label {
+      text-align: left;
+  }
+  .modal-body .form-horizontal .col-sm-offset-2 {
+      margin-left: 15px;
   }
   #logo-circle{
       height: 80px;
@@ -174,6 +266,15 @@
       <img src="../images/logo-1.svg" alt="Logo">
     </div>
     <div id='calendar'></div>
+    <div class="form-popup" id="myForm">
+      <form class="form-container">
+        <h1>Quality</h1>
+        <label for="email"><b>Rate quality of activity from 1 to 5!</b></label>
+        <input id="quality" type="number" min=1 max=5 required>
+        <button id="quality_button" type="submit" onclick="submit_form();" class="btn">Submit</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+      </form>
+    </div>
     <div id='external-events'>
       <h4>Log your day!</h4>
       <div id='external-events-list'>
@@ -185,13 +286,13 @@
         <div class='fc-event' id='Downtime'>Downtime</div>
       <p>
         <h4>Log your mood!</h4>
-          <div class='fc-event' id='mood'>😊</div>
-          <div class='fc-event' id='mood'>😌 </div>
-          <div class='fc-event' id='mood'>😐</div>
-          <div class='fc-event' id='mood'>😕</div>
-          <div class='fc-event' id='mood'>😥 </div>
+          <div class='fc-event' id='Mood'>😊</div>
+          <div class='fc-event' id='Mood'>😌 </div>
+          <div class='fc-event' id='Mood'>😐</div>
+          <div class='fc-event' id='Mood'>😕</div>
+          <div class='fc-event' id='Mood'>😥 </div>
         <h4>Visualize Trends!</h4>
-          <form action="/monthlytrends">
+            <form action="/monthlytrends">
               <input type="submit" value="Monthly Trends" />
             </form>
             <form action="/weeklytrends">
@@ -207,4 +308,3 @@
   </div>
 </body>
 </html>
-
