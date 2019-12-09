@@ -2,9 +2,11 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<!-- change this to reference new style sheet -->
-<!-- <link href='../packages/core/main.css' rel='stylesheet' /> -->
-
+<!-- loading in AJAX API's -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <style>
   body {
     margin-top: 10px;
@@ -29,8 +31,8 @@
   }
 </style>
 </head>
-<body>
 
+<body>
   <div id='wrap'>
     <div id="logo-circle">
       <img src="../static/logo.svg" alt="Logo">
@@ -44,30 +46,45 @@
     <div id="piechart" style="width: 900px; height: 500px;"></div>
 
     <div id='chart'>
-      <script>
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
+          <script type="text/javascript">
+          // Load the Visualization API and the piechart package.
+          google.charts.load('current', {'packages':['corechart']});
+          // Set a callback to run when the Google Visualization API is loaded.
+          google.charts.setOnLoadCallback(drawChart);
 
-            function drawChart() {
-              // HARD CODED DATA -- this is where we will need to request query results
-              var data = google.visualization.arrayToDataTable([
-                ['Activity', 'Average Hours per Day'],
-                ['Sleep',    7],
-                ['Exercise', 2],
-                ['Work',     11],
-                ['Meals',      2],
-                ['Social',  2],
-                ['Downtime', 2]
-              ]);
+          function drawChart() {
+            // TODO: this would work-- just need to access the right columns in the data table via ajax
+            // var jsonData = $.ajax({
+            //     url: '/values',
+            //     type: 'GET',
+            //     dataType: "json",
+            //     async: false
+            //     }).responseText;
+            // // Create our data table out of JSON data loaded from server.
+            // var data = new google.visualization.DataTable(jsonData);
 
-              var options = {
-                title: 'Your Average Day',
-                pieHole: 0.4,
-              };
-              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-              chart.draw(data, options);
-            }
-</script>
+            // TODO: comment this var data out if ajax starts working
+            var data = google.visualization.arrayToDataTable([
+              ['Activity', 'Average Hours per Day'],
+              ['Sleep',    7],
+              ['Exercise', 2],
+              ['Work',     11],
+              ['Meals',      2],
+              ['Social',  2],
+              ['Downtime', 2]
+            ]);
+            var options = {
+              title: 'Your Average Day',
+              // width: 400,
+              // height: 240,
+              pieHole: 0.4
+            };
+            // Instantiate and draw our chart, passing in some options.
+            // var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+          }
+          </script>
     </div>
     <div style='clear:both'></div>
   </div>
