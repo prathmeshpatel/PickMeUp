@@ -11,8 +11,11 @@ INSERT INTO RegisteredUser VALUES ('m.kylemurphy@gmail.com', 'Kyle Murphy', 'kyl
 -- INSERT INTO Exercise VALUES ('bce14@duke.edu','2019-10-07','09:00:00','10:00:00',1);
 -- INSERT INTO Exercise VALUES ('m.kylemurphy@gmail.com','2019-10-07','08:00:00','9:00:00',1);
 
-INSERT INTO Work VALUES ('bce14@duke.edu','2019-12-02','2019-12-02T08:00:00','2019-12-02T12:00:00',4);
-INSERT INTO Work VALUES ('m.kylemurphy@gmail.com','2019-12-02', '2019-12-02T09:00:00','2019-12-02T13:00:00',4);
+-- INSERT INTO Work VALUES ('bce14@duke.edu','2019-12-02','2019-12-02T08:00:00Z','2019-12-02T12:00:00Z',4);
+-- INSERT INTO Work VALUES ('m.kylemurphy@gmail.com','2019-12-02', '2019-12-02T09:00:00Z','2019-12-02T13:00:00Z',2);
+-- INSERT INTO Work VALUES ('m.kylemurphy@gmail.com','2019-12-06', '2019-12-06T09:00:00Z','2019-12-06T13:00:00Z',3);
+-- INSERT INTO Work VALUES ('m.kylemurphy@gmail.com','2019-12-12', '2019-12-12T09:00:00Z','2019-12-12T13:00:00Z',4);
+-- INSERT INTO Work VALUES ('m.kylemurphy@gmail.com','2019-12-15', '2019-12-15T09:00:00Z','2019-12-15T13:00:00Z',1);
 -- INSERT INTO Work VALUES ('bce14@duke.edu','2019-10-07','08:00:00','12:00:00',4);
 -- INSERT INTO Work VALUES ('m.kylemurphy@gmail.com','2019-10-07', '09:00:00','13:00:00',4);
 

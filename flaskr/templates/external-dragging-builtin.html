@@ -12,55 +12,23 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://unpkg.com/tooltip.js"></script>
+<script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script>
+<script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script>
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
+<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
+<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 <script>
-  var quality = 1;
-  var g_type = null;
-  var g_info = null;
-  var g_date = null;
+var quality = 1;
+var emojis = ['😥','😥','😕','😐','😌','😊'];
 
-  function open_form(type, date, info) {
-    document.getElementById("myForm").style.display = "block";
-    g_type = type;
-    g_date = date;
-    g_info = info;
-    // console.log(type);
-    // console.log(info);
-  }
-  function submit_form() {
-    document.getElementById("myForm").style.display = "none";
-    quality = document.getElementById('quality').value;
-    // console.log(quality);
-    // console.log(g_type);
-    // console.log(g_info);
-    ajax_other(quality);
-  }
-  function ajax_other(quality) {
-    // console.log("Quality: " + quality);
-    // console.log(g_info.event.start.toUTCString());
-    var end = new Date(g_info.event.start.toUTCString());
-    end.setHours(end.getHours() + 1);
-    var n = end.toISOString();
-    var start = new Date(g_info.event.start.toUTCString());
-    var s = start.toISOString();    
-    return $.ajax({
-      data: {
-        'id': g_type,
-        'date': g_date,
-        'start_time': s,
-        'end_time': n,
-        'quality': quality, 
-      },
-      type: 'POST',
-      url: "{{url_for('add_entry')}}"
-    });
-  }
   document.addEventListener('DOMContentLoaded', function() {
     var Calendar = FullCalendar.Calendar;
-    var Draggable = FullCalendarInteraction.Draggable
+    var Draggable = FullCalendarInteraction.Draggable;
     function handleForm(event) { 
       event.preventDefault(); 
     } 
-    document.getElementById("myForm").addEventListener('submit', handleForm);
+
     /* initialize the external events
     -----------------------------------------------------------------*/
 
@@ -85,22 +53,11 @@
               type: 'GET',
               dataType: 'json',
               data: {
-                  start: '2018-12-01T08:00:00',
-                  end: '2020-12-05T08:00:00',
+                  start: '2010-12-01T08:00:00',
+                  end: '2050-12-05T08:00:00',
               },
               success: function(result) {
-      //             var events = [];
-      //             console.log(result);
-      //             result.forEach(function(obj) {
-      //                 console.log(obj);
-      //                 events.push({
-      //                     title: obj.title,
-      //                     start: new Date(obj.start).toISOString().substring(0, new Date(obj.start).toISOString().length - 1),
-      //                     end: new Date(obj.end).toISOString().substring(0, new Date(obj.end).toISOString().length - 1)
-      //                 });
-                      // console.log(events);
-      //             });
-      //             callback(events);
+                console.log(result);
               }
           });
       },
@@ -112,37 +69,46 @@
       },
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
+    
       eventDragStart: function(info){ // When begin dragging an element, delete that row from the database - OCCURS WHEN DRAG EVENT ON CALENDAR TO NEW LOCATION
-        var type = info.event.title
+        var type = info.event.title;
         var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth() + 1) + "-" + info.event.start.getUTCDate();
         var start_time = new Date(info.event.start.toUTCString());
-        var s = start_time.toISOString();    
+        var s = start_time.toISOString().split('.')[0]+"Z";
         console.log(s);
         console.log(type);
-        $.ajax({
-          data: {
-            'id': type,
-            'date': date,
-            'start_time': s,
-          },
-          type: 'POST',
-          url: "{{url_for('delete_entry')}}"
-        });
-      },
-      eventDrop: function(info) {
-        console.log(info.event.title)
-        var type = info.event.title;;
-        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
-        console.log("drop");  
-        console.log(type);
-        if (type == "Mood") {
-          var emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
-          // console.log(emojis);
-          var index = emojis.indexOf(info.event.title); // 1
-          // console.log(index);
+        var emojis = ['😥','😥','😕','😐','😌','😊'];
+        if (emojis.includes(type)) {
+            $.ajax({
+              data: {
+                'id': "Mood",
+                'date': date
+              },
+              type: 'POST',
+              url: "{{url_for('delete_entry')}}"
+            });
+        } else {
           $.ajax({
             data: {
               'id': type,
+              'date': date,
+              'start_time': s,
+            },
+            type: 'POST',
+            url: "{{url_for('delete_entry')}}"
+          });
+        }
+      },
+      eventDrop: function(info) {
+        var type = info.event.title;
+        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
+        if (emojis.includes(type)) {
+          var index = emojis.indexOf(info.event.title); // 1
+          console.log(index);
+          info.event.setAllDay(true); 
+          $.ajax({
+            data: {
+              'id': "Mood",
               'date': date,
               'happiness': index,
             },
@@ -150,20 +116,58 @@
             url: "{{url_for('add_entry')}}"
           });
         } else {
-          open_form(type, date, info);
+          info.event.setAllDay(false); 
+          do{
+            quality = prompt('Did the the quality of your '+ info.event.title+ ' change? If so, update the quality of your '+ info.event.title + ' on a scale of 1-5.',quality);
+          }
+          while(quality == null || quality == "" || quality>5 || quality<1);
+          info.event.setExtendedProp('description',quality);
+          // $('#calendar').fullCalendar('updateEvent',info.event);
+          if(info.event.end == null){
+            var end = new Date(info.event.start.toUTCString());
+            end.setHours(end.getHours() + 1);
+            var n_time = end.toISOString().split('.')[0]+"Z";
+          }
+          else{
+            var end = new Date(info.event.end.toUTCString());
+            var n_time = end.toISOString().split('.')[0]+"Z";
+          }
+          var start = new Date(info.event.start.toUTCString());
+          var s_time = start.toISOString().split('.')[0]+"Z";
+          var qual = info.event.extendedProps.description; 
+          console.log(type);
+          console.log(date);
+          console.log(s_time);
+          console.log(n_time);
+          $.ajax({
+            data: {
+              'id': type,
+              'date': date,
+              'start_time': s_time,
+              'end_time': n_time,
+              'quality': qual, 
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
         }
       },
       eventReceive: function(info) {
         var type = info.draggedEl.getAttribute("id");
-        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
-        var duration = 1;
+        var day = String(info.event.start.getUTCDate());
+        if (day.length == 1) {
+          day = "0" + day;
+        }
+        console.log(day)
+        var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + day;
         // console.log(info.event.start);
         // console.log(type);
         if (type == "Mood") {
-          var emojis = ['😥','😥','😕','😐','😌','😊'];  // emoji index maps to happiness 1-5, index 0 placeholder
-          // console.log(emojis);
           var index = emojis.indexOf(info.event.title); // 1
-          // console.log(index);
+          info.event.setAllDay(true); 
+          console.log(type);
+          console.log(date);
+          console.log(index);
           $.ajax({
             data: {
               'id': type,
@@ -174,22 +178,78 @@
             url: "{{url_for('add_entry')}}"
           });
         } else {
-          open_form(type, date, info);
+          info.event.setAllDay(false); 
+          do{
+            quality = prompt('What was the quality of your '+ info.event.title+ ' on a scale of 1-5?');
+          }
+          while(quality == null || quality == "" || quality>5 || quality<1);
+          info.event.setExtendedProp('description',quality);
+          $('#calendar').fullCalendar('updateEvent',info.event);
+          //console.log(quality);
+          //console.log(info.event.extendedProps.description);
+          var end = new Date(info.event.start.toUTCString());
+          end.setHours(end.getHours() + 1);
+          var n_time = end.toISOString().split('.')[0]+"Z";
+          var start = new Date(info.event.start.toUTCString());
+          var s_time = start.toISOString().split('.')[0]+"Z";  
+          var qual = info.event.extendedProps.description; 
+          console.log(type);
+          console.log(date);
+          console.log(s_time);
+          console.log(n_time);
+          console.log(qual);
+          $.ajax({
+            data: {
+              'id': type,
+              'date': date,
+              'start_time': s_time,
+              'end_time': n_time,
+              'quality': qual, 
+            },
+            type: 'POST',
+            url: "{{url_for('add_entry')}}"
+          });
         }
       },
       eventResize: function(info) {
         var date = info.event.start.getUTCFullYear() + "-" + (info.event.start.getUTCMonth()+1) + "-" + info.event.start.getUTCDate();
         var type = info.event.title;
+        var end = new Date(info.event.end.toUTCString());
+        //console.log(end);
+
+        var n_time = end.toISOString().split('.')[0]+"Z";
+        var start = new Date(info.event.start.toUTCString());
+        var s_time = start.toISOString().split('.')[0]+"Z";
+        var qual = info.event.extendedProps.description; 
+        console.log(type);
+        console.log(date);
+        console.log(s_time);
+        console.log(n_time);
+        console.log(qual);
         $.ajax({
           data: {
             'id': type,
             'date': date,
-            'start_time': info.event.start,
-            'end_time': info.event.end,
+            'start_time': s_time,
+            'end_time': n_time,
+            'quality': qual,
           },
           type: 'POST',
           url: "{{url_for('entry_resize')}}"
         });
+      },
+
+      eventMouseEnter: function(info,quality){
+        var type = info.event.title;
+        if(!emojis.includes(type)){
+
+          var tooltip = new Tooltip(info.el, {
+            title: info.event.title + ' Quality: '+info.event.extendedProps.description,
+            placement: 'top',
+            trigger: 'hover',
+            container: 'body',
+          });
+        }
       }
     });
     calendar.render();
@@ -326,8 +386,9 @@
     <div id="logo-circle">
       <img src="../static/logo.svg" alt="Logo">
     </div>
+    <a href="{{ url_for('logout') }}">Log Out</a>
     <div id='calendar'></div>
-    <div class="form-popup" id="myForm">
+<!--     <div class="form-popup" id="myForm">
       <form class="form-container">
         <h1>Quality</h1>
         <label for="email"><b>Rate quality of activity from 1 to 5!</b></label>
@@ -335,7 +396,7 @@
         <button id="quality_button" type="submit" onclick="submit_form();" class="btn">Submit</button>
         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
       </form>
-    </div>
+    </div> -->
     <div id='external-events'>
       <h4>Log your day!</h4>
       <div id='external-events-list'>-
@@ -355,9 +416,6 @@
         <h4>Visualize Trends!</h4>
             <form action="/monthlytrends">
               <input type="submit" value="Monthly Trends" />
-            </form>
-            <form action="/weeklytrends">
-              <input type="submit" value="Weekly Trends" />
             </form>
             <form action="/dailytrends">
               <input type="submit" value="Daily Trends" />

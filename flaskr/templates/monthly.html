@@ -2,8 +2,6 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<!-- change this to reference new style sheet -->
-<!-- <link href='../packages/core/main.css' rel='stylesheet' /> -->
 <style>
   body {
     margin-top: 10px;
@@ -39,36 +37,79 @@
     <br>
     <h1> Monthly Trends </h1>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <label for="pick_month">Select Month</label>
+    <input id="pick_month" type="month" name="pick_month" value="2019-12">
+    <label for="myList">Select Data Type</label>
+    <select id = "types">
+     <option value = "Sleep">Sleep</option>
+     <option value = "Mood">Mood</option>
+     <option value = "Downtime">Downtime</option>
+     <option value = "Exercise">Exercise</option>
+     <option selected value = "Work">Work</option>
+     <option value = "Meals">Meals</option>
+     <option value = "Social">Social</option>
+    </select>
     <div id="chart_div"></div>
     <div id='chart'>
       <script>
-      google.charts.load('current', {packages: ['corechart', 'line']});
-      google.charts.setOnLoadCallback(drawLineColors);
+      var table_type = $("#types :selected").val();
+      var curr_month = document.getElementById('pick_month').value;
+      google.charts.load('current', {packages: ['corechart', 'line']});      
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+      const activities = document.getElementById('types');
+      const month = document.getElementById('pick_month');
+      activities.addEventListener('change', (e) => {
+        console.log(`e.target.value = ${ e.target.value }`);
+        table_type = e.target.value;
+        drawChart();
+      });
+      month.addEventListener('change', (e) => {
+        console.log(`e.target.value = ${ e.target.value }`);
+        curr_month = e.target.value;
+        drawChart();
+      });
+      function drawChart() {
+        var jsonData = $.ajax({
+            url: "/monthlyvalues",
+            data: {
+              'id': table_type,
+              'month': curr_month,
+            },
+            dataType: "json",
+            cache: false,
+            type: "POST",
+            async: false,
+            success: function (data) {
+              console.log(data);   
+            },
+            }).responseText;
+        console.log(jsonData);
+        var arr = JSON.parse(jsonData);
+        console.log(arr);
+        var data = new google.visualization.DataTable();
+        if (table_type == "Mood") {
+          data.addColumn('string', 'Date');
+          data.addColumn('number', 'Happiness');
+        } else {
+          data.addColumn('string', 'Date');
+          data.addColumn('number', 'Quality');
+          data.addColumn('number', 'Hours');
+        }
+        
+        data.addRows(arr);
 
-      function drawLineColors() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'X');
-            data.addColumn('number', 'Mood');
-            data.addColumn('number', 'Hours Slept');
-            // HARD CODED DATA -- this is where we will need to request query results
-            data.addRows([
-              [0, 5, 10],  [1, 4.9, 9], [2, 5, 9],  [3, 4.5, 8],  [4, 3, 12], [5, 4, 8], [6, 4, 8],[7, 4, 8],[8, 4.5, 8.5],
-              [9, 4.5, 8.5],[10, 4.7, 8],[11, 4, 7.5],[12, 2, 4.5],[13, 3, 6.5],[14, 2.5, 6.5],[15, 4.5, 8.5],[16, 4.5, 8.5],
-              [17, 4.5, 8.5],[18, 4.2, 8],[19, 4.5, 8],[20, 4.5, 8.5],[21, 4.5, 9],[22, 5, 9],[23, 4.5, 8],[24, 5, 8],
-              [25, 5, 8],[26, 4.5, 8],[27, 4.5, 8.5],[28, 5, 10],[29, 4.5, 10],[30, 5, 8]
-            ]);
-
-            var options = {
-              title: 'November 2019',
-              hAxis: {
-                title: 'Day of Month'
-              },
-              colors: ['#F86767', '#40E0D0']
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-          }
+        var options = {
+            title: table_type,
+            hAxis: {
+              title: 'Day of Month'
+            },
+            colors: ['#F86767', '#40E0D0']
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
     </script>
     </div>
   </div>

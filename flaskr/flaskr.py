@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, flash, json
@@ -96,6 +97,7 @@ def dict_factory(cursor, row):
 
 
 def toJson():
+    global current_user
     db = get_db()
     db.row_factory = dict_factory
     u = User()
@@ -103,18 +105,29 @@ def toJson():
     # for each of the bables , select all the records from the table
     allEntries = []
     for table_name in tables:
-        if table_name == "Mood":
-            continue
         conn = get_db()
         conn.row_factory = dict_factory
         cur1 = conn.cursor()
-        cur1.execute("SELECT * FROM " + table_name)
+        cur1.execute("SELECT * FROM " + table_name + " WHERE email = (?)", [current_user.email])
         results = cur1.fetchall()
+        if table_name == "Mood":
+            emojis = ['😥', '😥', '😕', '😐', '😌', '😊']
+            for row in results:
+                r = {}
+                r['title'] = emojis[row['happiness']]
+                r['allDay'] = True
+                r['start'] = row['date']
+                allEntries.append(r)
+                print(r)
+            continue
         for row in results:
             r = {}
             r['title'] = table_name
             r['start'] = row['start_time']
             r['end'] = row['end_time']
+            r['extendedProps'] = {}
+            r['extendedProps']['description'] = row['quality']
+            r['extendedProps']['quality'] = row['quality']
             allEntries.append(r)
             print(results)
         print(allEntries)
@@ -128,6 +141,79 @@ def get_all_entries():
     entries = toJson()
     print(entries)
     return json.dumps(entries)
+
+
+@app.route('/dailyvalues', methods=['GET'])
+def get_daily_trends():
+    '''Average mood past 30 days
+    Avg hrs per activity
+    Avg quality per activity'''
+    global current_user
+    db = get_db()
+    db.row_factory = dict_factory
+    u = User()
+    tables = u._get_activities()
+    conn = get_db()
+    conn.row_factory = dict_factory
+    cur1 = conn.cursor()
+    cur1.execute("select avg(happiness) from Mood")
+    allAVGs = []
+    allAVGs.append(['Activity', 'Average Hours per Day'])
+    for table_name in tables:
+        if table_name == "Mood":
+            continue
+        conn = get_db()
+        conn.row_factory = dict_factory
+        cur1 = conn.cursor()
+        cur1.execute("SELECT AVG(strftime('%H',end_time)-strftime('%H',start_time)) as avgTime FROM " + table_name + " WHERE email = (?)", [current_user.email])
+        resultAvg = cur1.fetchall()
+        if resultAvg[0]['avgTime'] is None:
+            resultAvg[0]['avgTime'] = 0.0
+        allAVGs.append([table_name, resultAvg[0]['avgTime']])
+    db.close()
+    return json.dumps(allAVGs)
+
+
+@app.route('/monthlyvalues', methods=['POST', 'GET'])
+def get_monthly_trends():
+    '''Given YYYY-MM and table id: return all rows in line graph format'''
+    global current_user
+    if not request.form:
+        print("no form")
+        return json.dumps([])
+    if not session.get('logged_in') or not current_user:
+        return redirect(url_for('login'))
+    table_id, month = request.form['id'], request.form['month']  # format of month: "YYYY-MM"
+    month_start = 'date("' + month + '-01' + '")'
+    month_end = 'date("' + month + '-31' + '")'
+    select_table = f"select * from {table_id}"
+    data = query_db(select_table + ' where email = (?) and date >= ' + month_start + ' and date <= ' + month_end + ' order by date asc', [current_user.email])  # may need to add dbl quotes to dates
+    if not data:
+        return json.dumps([])
+    results = []
+    if table_id == "Mood":
+        # results.append(["Date", "Happiness"])
+        for row in data:
+            r = []
+            r.append(row['date'][-2:])  # day
+            r.append(row['happiness'])
+            results.append(r)
+    else:
+        # results.append(["Date", "Quality", "Hours"])
+        for row in data:
+            r = []
+            end = datetime.strptime(row['end_time'], "%Y-%m-%dT%H:%M:%SZ")
+            start = datetime.strptime(row['start_time'], "%Y-%m-%dT%H:%M:%SZ")
+            duration = end - start                         # For build-in functions
+            duration_in_s = duration.total_seconds()
+            hours = divmod(duration_in_s, 3600)[0]
+            print(hours)
+            r.append(row['date'][-2:])  # day
+            r.append(row['quality'])
+            r.append(hours)
+            results.append(r)
+    print(results)
+    return json.dumps(results)
 
 
 def query_db(query, args=(), one=False):
@@ -148,7 +234,9 @@ def show_entries():
     mood = query_db('select date, happiness from Mood where email = (?) order by date desc', [current_user.email])
     if mood is None:
         mood = []
-    return render_template('show_entries.html', mood=mood, user=current_user)
+    return render_template('external-dragging-builtin.html', mood=mood, user=current_user)
+#   now that we have calendar events displaying, I deleted show_entries.html
+#   this function will route back to the default calendar page instead
 
 
 @app.route('/resize', methods=['POST'])
@@ -207,7 +295,6 @@ def add_entry():
     if not session.get('logged_in') or not current_user:
         return redirect(url_for('login'))
     table_id = request.form['id']
-    print(request.form['end_time'])
     if table_id == "Mood":
         query_db('insert into Mood (email, date, happiness) values(?,?,?)',
                  [current_user.email, request.form['date'], request.form['happiness']])

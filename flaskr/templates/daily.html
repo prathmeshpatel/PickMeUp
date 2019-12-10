@@ -54,25 +54,19 @@
 
           function drawChart() {
             // TODO: this would work-- just need to access the right columns in the data table via ajax
-            // var jsonData = $.ajax({
-            //     url: '/values',
-            //     type: 'GET',
-            //     dataType: "json",
-            //     async: false
-            //     }).responseText;
-            // // Create our data table out of JSON data loaded from server.
-            // var data = new google.visualization.DataTable(jsonData);
+            var jsonData = $.ajax({
+                url: '/dailyvalues',
+                type: 'GET',
+                dataType: "json",
+                async: false
+                }).responseText;
+            // Create our data table out of JSON data loaded from server.
+            console.log(jsonData)
+            var array  = JSON.parse(jsonData)
+            console.log(array)
 
-            // TODO: comment this var data out if ajax starts working
-            var data = google.visualization.arrayToDataTable([
-              ['Activity', 'Average Hours per Day'],
-              ['Sleep',    7],
-              ['Exercise', 2],
-              ['Work',     11],
-              ['Meals',      2],
-              ['Social',  2],
-              ['Downtime', 2]
-            ]);
+
+            var data = google.visualization.arrayToDataTable(array);
             var options = {
               title: 'Your Average Day',
               // width: 400,
